@@ -50,7 +50,7 @@ class CacheFilesystem extends CacheAbstract {
 	*/
 	private function __construct() {
 		$this->lifetime = 3600 * 24 * 30;
-		$this->enable(true);
+		$this->enable();
 	}
 
 	/**
@@ -70,25 +70,22 @@ class CacheFilesystem extends CacheAbstract {
 
 		// reload
 		if ($this->isEnabled()) {
-			$this->enable(true);
+			$this->enable();
 		}
 
 		return $this;
 	}
 
-	public function enable($boolean = true) {
-		if ($boolean) {
-			// ok, go
-			$this->cache = new \Cache_Lite_Timed(
-				array(
-					'cacheDir' => $this->path,
-					'lifeTime' => $this->getDefaultLifetime(), // in seconds
-					'automaticCleaningFactor' => 200,
-					'hashedDirectoryLevel' => 1,
-				)
-			);
-		}
-		return parent::enable($boolean);
+	public function enable() {
+		$this->cache = new \Cache_Lite_Timed(
+			array(
+				'cacheDir' => $this->path,
+				'lifeTime' => $this->getDefaultLifetime(), // in seconds
+				'automaticCleaningFactor' => 200,
+				'hashedDirectoryLevel' => 1,
+			)
+		);
+		return parent::enable();
 	}
 
 	protected function hashKey(CacheKey $k) {
