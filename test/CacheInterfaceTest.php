@@ -1,5 +1,8 @@
 <?php
 
+use Cachearium\Cached;
+use Cachearium\CachedObject;
+
 class MockCachedClass {
 	use Cached;
 	use CachedObject;

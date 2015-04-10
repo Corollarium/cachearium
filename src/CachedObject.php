@@ -2,18 +2,6 @@
 
 namespace Cachearium;
 
-/**
- * Interface for classes which cache data.
- */
-trait Cached {
-	/**
-	 * Clean all caches created by the class. Used when a new version is
-	 * deployed to avoid stale data.
-	 *
-	 */
-	abstract public function cacheClean();
-}
-
 trait CachedObject {
 	/**
 	 * Returns a cache key for this object.
