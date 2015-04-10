@@ -3,3 +3,4 @@ vendor/
 nbproject/
 .settings/
 .project
+composer.lock

@@ -9,5 +9,5 @@ namespace Cachearium\Exceptions;
  * @author corollarium
  * @codeCoverageIgnore
  */
-class CacheKeyClashException extends Exception {
+class CacheKeyClashException extends \Exception {
 }

@@ -8,5 +8,5 @@ namespace Cachearium\Exceptions;
  * @author corollarium
  * @codeCoverageIgnore
  */
-class CacheInvalidParameterException extends Exception {
+class CacheInvalidParameterException extends \Exception {
 }

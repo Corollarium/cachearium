@@ -6,5 +6,5 @@ namespace Cachearium\Exceptions;
  * @author corollarium
  *
  */
-class CacheUnsupportedOperation extends Exception {
+class CacheUnsupportedOperation extends \Exception {
 }

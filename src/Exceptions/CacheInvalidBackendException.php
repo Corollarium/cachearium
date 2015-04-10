@@ -7,5 +7,5 @@ namespace Cachearium\Exceptions;
  *
  * @codeCoverageIgnore
  */
-class CacheInvalidBackendException extends Exception {
+class CacheInvalidBackendException extends \Exception {
 }
