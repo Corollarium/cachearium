@@ -75,7 +75,7 @@ abstract class CacheAbstract {
 	 * @return CacheAbstract
 	 */
 	static public function factory($backend) {
-		$classname = 'Cache' . $backend;
+		$classname = '\Cachearium\Backend\Cache' . $backend;
 		if (!class_exists($classname)) {
 			throw new Exceptions\CacheInvalidBackendException("Class does not exist");
 		}
