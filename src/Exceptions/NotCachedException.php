@@ -8,5 +8,5 @@ namespace Cachearium\Exceptions;
  * @author corollarium
  * @codeCoverageIgnore
  */
-class NotCachedException extends Exception {
+class NotCachedException extends \Exception {
 }
