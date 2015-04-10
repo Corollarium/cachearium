@@ -4,6 +4,7 @@ namespace Cachearium\Backend;
 
 use Cachearium\Backend\CacheRAM;
 use Cachearium\CacheKey;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Cache class which uses memcache.
@@ -46,6 +47,7 @@ class CacheMemcached extends CacheRAM {
 				$instances->addServers($servers);
 			}
 		}
+
 		return $instances;
 	}
 
@@ -117,6 +119,9 @@ class CacheMemcached extends CacheRAM {
 	 * @return boolean
 	 */
 	public function addServers($servers) {
+		if(!class_exists('Memcached')){
+			return false;
+		}
 		return $this->memcached->addServers($servers);
 	}
 
