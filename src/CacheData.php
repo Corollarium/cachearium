@@ -102,7 +102,7 @@ class CacheData {
 	}
 
 	public function dependencyInit(CacheAbstract $cache, CacheKey $k) {
-		return $cache->incrementK(0, $k, 0);
+		return $cache->increment(0, $k, 0);
 	}
 
 	/**
@@ -169,7 +169,7 @@ class CacheData {
 		return null;
 	}
 
-	public function appendRecursionK(CacheKey $k) {
+	public function appendRecursion(CacheKey $k) {
 		$this->addDependency($k);
 		$this->data[] = array(
 			'type' => CACHEDATA_TYPE_RECURSION,
@@ -267,12 +267,12 @@ class CacheData {
 			}
 			else if ($item['type'] == CACHEDATA_TYPE_RECURSION) {
 				if ($recurse) {
-					$retval[] = $c->getK($item['data']);
+					$retval[] = $c->get($item['data']);
 				}
 			}
 			else if ($item['type'] == CACHEDATA_TYPE_RECURSION_DATA) {
 				if ($recurse) {
-					$data = $c->getDataK($item['data']);
+					$data = $c->getData($item['data']);
 					$retval[] = $data->stringify($c);
 				}
 			}
