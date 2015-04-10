@@ -103,8 +103,13 @@ abstract class CacheAbstract {
 	 *
 	 * @return CacheAbstract this
 	 */
-	public function setEnabled($b) {
-		$this->enabled = $b;
+	final public function setEnabled($b) {
+		if ($b) {
+			$this->enable();
+		}
+		else {
+			$this->disable();
+		}
 		return $this;
 	}
 
