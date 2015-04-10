@@ -1,5 +1,7 @@
 <?php
 
+use Cachearium\CacheKey;
+
 class CacheKeyTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
