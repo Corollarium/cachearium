@@ -18,19 +18,19 @@ class CacheNullTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf('Cachearium\Backend\CacheNull', $cache);
 
 		try {
-			$cache->getK($key);
+			$cache->get($key);
 			$this->assertTrue(false);
 		}
-		catch (NotCachedException $e) {
+		catch (Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 
-		$this->assertEquals(5, $cache->incrementK(1, $key, 5));
-		$this->assertTrue($cache->storeK(10, $key));
-		$this->assertTrue($cache->deleteK($key));
-		$this->assertTrue($cache->cleanK($key));
+		$this->assertEquals(5, $cache->increment(1, $key, 5));
+		$this->assertTrue($cache->store(10, $key));
+		$this->assertTrue($cache->delete($key));
+		$this->assertTrue($cache->clean($key));
 		$this->assertTrue($cache->clear());
-		$this->assertFalse($cache->startK($key));
+		$this->assertFalse($cache->start($key));
 		$cache->end();
 		$cache->prefetch(array());
 		$cache->enable(true);
