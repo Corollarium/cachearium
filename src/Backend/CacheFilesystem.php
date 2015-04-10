@@ -4,6 +4,7 @@ namespace Cachearium\Backend;
 
 use Cachearium\CacheAbstract;
 use Cachearium\CacheKey;
+use Cachearium\CacheLogEnum;
 
 require_once(__DIR__ . '/external/Timed.php');
 
@@ -96,7 +97,7 @@ class CacheFilesystem extends CacheAbstract {
 	}
 
 	public function increment($value, CacheKey $k, $default = 0) {
-		throw new CacheUnsupportedOperation();
+		throw new \Cachearium\Exceptions\CacheUnsupportedOperation();
 	}
 
 	/**
@@ -110,7 +111,7 @@ class CacheFilesystem extends CacheAbstract {
 	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
-			throw new NotCachedException();
+			throw new \Cachearium\Exceptions\NotCachedException();
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -131,7 +132,7 @@ class CacheFilesystem extends CacheAbstract {
 		if ($retval) {
 			return unserialize($retval);
 		}
-		throw new NotCachedException();
+		throw new \Cachearium\Exceptions\NotCachedException();
 	}
 
 	/**
