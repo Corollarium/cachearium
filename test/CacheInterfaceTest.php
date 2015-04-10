@@ -1,10 +1,4 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
-
-require_once(__DIR__ . '/../Cache.php');
 
 class MockCachedClass {
 	use Cached;

@@ -2,6 +2,13 @@
 
 namespace Cachearium;
 
+use Cachearium\CacheInvalidBackendException;
+use Cachearium\NotCachedException;
+use Cachearium\CacheInvalidParameterException;
+use Cachearium\CacheKeyClashException;
+use Cachearium\CacheInvalidDataException;
+use Cachearium\CacheUnsupportedOperation;
+
 /**
  * Abstract class for caches
  *
@@ -98,23 +105,23 @@ abstract class CacheAbstract {
 	}
 
 	/**
-	 * Enable or disable this cache
+	 * Enable this cache
 	 *
-	 * @param boolean $bool
-	 * @throws CacheInvalidParameterException If something goes wrong
 	 * @return CacheAbstract this
 	 */
-	public function enable($bool = true) {
-		$this->enabled = $bool;
+	public function enable() {
+		$this->enabled = true;
 		return $this;
 	}
 
 	/**
-	 * @throws CacheInvalidParameterException
+	 * Disable this cache
+	 *
 	 * @return CacheAbstract
 	 */
 	public function disable() {
-		return $this->enable(false);
+		$this->enabled = false;
+		return $this;
 	}
 
 	/**
@@ -143,7 +150,7 @@ abstract class CacheAbstract {
 	 * @return any
 	 * @throws NotCachedException
 	 */
-	abstract public function getK(CacheKey $k);
+	abstract public function get(CacheKey $k);
 
 	/**
 	 *
@@ -154,12 +161,8 @@ abstract class CacheAbstract {
 	 * @throws NotCachedException
 	 * @see getK
 	 */
-	public function get($base, $id, $sub = null) {
+	public function getP($base, $id, $sub = null) {
 		return $this->getK(new CacheKey($base, $id, $sub));
-	}
-
-	public function getData($base, $id, $sub = null) {
-		return $this->getDataK(new CacheKey($base, $id, $sub));
 	}
 
 	/**
@@ -168,12 +171,16 @@ abstract class CacheAbstract {
 	 * @return CacheData
 	 * @throws NotCachedException
 	 */
-	public function getDataK(CacheKey $k) {
+	public function getData(CacheKey $k) {
 		$cd = CacheData::unserialize($this->getK($k));
 		if ($cd->checkUpdateToDate($this)) {
 			return $cd;
 		}
 		throw new NotCachedException();
+	}
+
+	public function getDataP($base, $id, $sub = null) {
+		return $this->getDataK(new CacheKey($base, $id, $sub));
 	}
 
 	/**
@@ -209,14 +216,14 @@ abstract class CacheAbstract {
 	 * @param integer $value
 	 * @param CacheKey $k
 	 */
-	abstract public function incrementK($value, CacheKey $k, $default = 0);
+	abstract public function increment($value, CacheKey $k, $default = 0);
 
 	/**
 	 * Invalidates a dependency index. If the index does not exist it is created.
 	 * @param CacheKey $k
 	 */
 	public function invalidate(CacheKey $k) {
-		return $this->incrementK(1, $k, 0);
+		return $this->increment(1, $k, 0);
 	}
 
 	/**
@@ -228,7 +235,7 @@ abstract class CacheAbstract {
 	 * it is respected or not.
 	 * @return boolean true if no problem
 	 */
-	abstract public function storeK($data, CacheKey $k, $lifetime = 0);
+	abstract public function store($data, CacheKey $k, $lifetime = 0);
 
 	/**
 	 * @param unknown $data
@@ -238,7 +245,7 @@ abstract class CacheAbstract {
 	 * @param number $lifetime
 	 * @see store()
 	 */
-	public function save($data, $base, $id, $sub = null, $lifetime = 0) {
+	public function saveP($data, $base, $id, $sub = null, $lifetime = 0) {
 		return $this->storeK($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
 
@@ -250,7 +257,7 @@ abstract class CacheAbstract {
 	 * @param number $lifetime
 	 * @see store()
 	 */
-	public function store($data, $base, $id, $sub = null, $lifetime = 0) {
+	public function storeP($data, $base, $id, $sub = null, $lifetime = 0) {
 		return $this->storeK($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
 
@@ -264,18 +271,11 @@ abstract class CacheAbstract {
 	 * @param CacheKey $k
 	 * @return unknown_type
 	 */
-	abstract public function deleteK(CacheKey $k);
+	abstract public function delete(CacheKey $k);
 
-	public function delete($base, $id, $sub = null) {
+	public function deleteP($base, $id, $sub = null) {
 		return $this->deleteK(new CacheKey($base, $id, $sub));
 	}
-
-	/**
-	 * Cleans cache: all entries with a certain $base and $id
-	 *
-	 * @return boolean true if no problem
-	 */
-	abstract public function clean($base, $id);
 
 	/**
 	 * Cleans cache: all entries with a certain $base and $id in the $key
@@ -283,9 +283,16 @@ abstract class CacheAbstract {
 	 *
 	 * @return boolean true if no problem
 	 */
-	public function cleanK(CacheKey $k) {
+	public function clean(CacheKey $k) {
 		return $this->clean($k->getBase(), $k->getId());
 	}
+
+	/**
+	 * Cleans cache: all entries with a certain $base and $id
+	 *
+	 * @return boolean true if no problem
+	 */
+	abstract public function cleanP($base, $id);
 
 	/**
 	 * Clears entire cache. Use sparingly.
@@ -318,17 +325,17 @@ abstract class CacheAbstract {
 	 * @return boolean True if cached
 	 * @review
 	 */
-	public function startK(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
+	public function start(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		$this->extraSub($k->sub);
 
 		return $this->recursivestartK($k, $lifetime, $print, $fail);
 	}
 
-	public function recursivestart($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
+	public function recursiveStartP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
 		return $this->recursivestartK(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
 
-	public function start($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
+	public function startP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
 		return $this->startK(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
 
@@ -338,7 +345,7 @@ abstract class CacheAbstract {
 	 * @param integer $lifetime
 	 * @param callable $c
 	 */
-	public function startCallbackK(CacheKey $k, callable $c, $lifetime = null) {
+	public function startCallback(CacheKey $k, callable $c, $lifetime = null) {
 		$data = $this->startK($k, $lifetime);
 		if (!$data) {
 			$c();
@@ -453,7 +460,7 @@ abstract class CacheAbstract {
 		return false;
 	}
 
-	public function newend($print = true) {
+	public function newEnd($print = true) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -544,7 +551,7 @@ abstract class CacheAbstract {
 	 * @throws CacheKeyClashException
 	 * @return boolean
 	 */
-	public function recursivestartK(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
+	public function recursivestart(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -640,7 +647,7 @@ abstract class CacheAbstract {
 		return false;
 	}
 
-	public function recursiveend($print = true) {
+	public function recursiveEnd($print = true) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
