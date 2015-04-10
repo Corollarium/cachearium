@@ -6,6 +6,7 @@ use Cachearium\CacheData;
 use Cachearium\Backend\CacheMemcached;
 use Cachearium\Backend\CacheRAM;
 use Cachearium\Backend\CacheFilesystem;
+use Cachearium\CacheLogEnum;
 
 class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
