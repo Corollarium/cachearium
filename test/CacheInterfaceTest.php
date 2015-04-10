@@ -1,11 +1,10 @@
 <?php
 
-use Cachearium\Cached;
-use Cachearium\CachedObject;
+use Cachearium\CacheKey;
 
 class MockCachedClass {
-	use Cached;
-	use CachedObject;
+	use Cachearium\Cached;
+	use Cachearium\CachedObject;
 
 	public function cacheClean() {
 		return;
@@ -25,7 +24,7 @@ class CacheInterfaceTest extends PHPUnit_Framework_TestCase {
 		$c->cacheClean();
 
 		$k = $c->getCacheKey();
-		$this->assertInstanceOf('CacheKey', $k);
+		$this->assertInstanceOf('Cachearium\CacheKey', $k);
 		$this->assertEquals('MockCachedClass', $k->getBase());
 		$this->assertEquals(1, $k->getId());
 	}
