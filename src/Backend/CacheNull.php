@@ -2,6 +2,8 @@
 
 namespace Cachearium\Backend;
 
+use Cachearium\CacheAbstract;
+
 /**
  * Null cache class. Does nothing but implements all required methods.
  *

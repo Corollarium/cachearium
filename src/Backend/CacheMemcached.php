@@ -2,7 +2,7 @@
 
 namespace Cachearium\Backend;
 
-require_once 'CacheRAM.php';
+use Cachearium\Backend\CacheRAM;
 
 /**
  * Cache class which uses memcache.

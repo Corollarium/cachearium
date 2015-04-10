@@ -1,10 +1,8 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
 
-require_once(__DIR__ . '/../Cache.php');
+use Cachearium\CacheAbstract;
+use Cachearium\Backend\CacheMemcached;
+use Cachearium\Backend\CacheRAM;
 
 class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;

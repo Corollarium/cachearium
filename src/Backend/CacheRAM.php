@@ -2,6 +2,8 @@
 
 namespace Cachearium\Backend;
 
+use Cachearium\CacheAbstract;
+
 /**
  * This class caches on local RAM, only for the duration of this execution.
  *

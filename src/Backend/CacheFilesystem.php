@@ -2,6 +2,8 @@
 
 namespace Cachearium\Backend;
 
+use Cachearium\CacheAbstract;
+
 require_once(__DIR__ . '/external/Timed.php');
 
 /**
