@@ -41,19 +41,19 @@ class CacheNull extends CacheAbstract {
 	public function enable($bool = true) {
 	}
 
-	public function getK(CacheKey $k) {
+	public function get(CacheKey $k) {
 		throw new NotCachedException();
 	}
 
-	public function incrementK($value, CacheKey $k, $default = 0) {
+	public function increment($value, CacheKey $k, $default = 0) {
 		return $default;
 	}
 
-	public function storeK($data, CacheKey $k, $lifetime = 0) {
+	public function store($data, CacheKey $k, $lifetime = 0) {
 		return true;
 	}
 
-	public function deleteK(CacheKey $k) {
+	public function delete(CacheKey $k) {
 		return true;
 	}
 
@@ -65,7 +65,7 @@ class CacheNull extends CacheAbstract {
 		return true;
 	}
 
-	public function startK(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
+	public function start(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		return false;
 	}
 
