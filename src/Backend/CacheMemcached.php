@@ -274,7 +274,7 @@ class CacheMemcached extends CacheRAM {
 	 * @param string $id Item id
 	 * @return boolean true if no problem
 	 */
-	public function clean($base, $id) {
+	public function cleanP($base, $id) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			throw new NotCachedException();
