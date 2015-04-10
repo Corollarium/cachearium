@@ -67,7 +67,7 @@ class CacheMemcached extends CacheRAM {
 		// memcache error, probably offline. Logging to DB is bad (will overflow
 		// the DB). We should really restart memcached
 		// TODO: via Batch?
-		$this->enable(false);
+		$this->disable();
 	}
 
 	public function getFetches() {
@@ -95,12 +95,12 @@ class CacheMemcached extends CacheRAM {
 	 */
 	private function __construct() {
 		if (!class_exists('Memcached')) {
-			$this->enable(false);
+			$this->disable();
 			return;
 		}
 		$this->memcached = new \Memcached;
 		if (!$this->memcached) {
-			$this->enable(false);
+			$this->disable();
 			return;
 		}
 
