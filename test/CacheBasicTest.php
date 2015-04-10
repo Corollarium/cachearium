@@ -121,7 +121,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetCleanFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		if ($cache->isEnabled()) {
 			$this->setGetClean($cache);
 		}
@@ -235,7 +235,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetStoreDataFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		if ($cache->isEnabled()) {
 			$this->getStoreData($cache);
 		}
@@ -288,7 +288,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 	public function testdependencyFS() {
 		$this->markTestSkipped();
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		if ($cache->isEnabled()) {
 			$this->dependency($cache);
 		}
