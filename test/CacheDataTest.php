@@ -1,5 +1,10 @@
 <?php
 
+use Cachearium\CacheAbstract;
+use Cachearium\CacheData;
+use Cachearium\CacheKey;
+
+
 class CacheDataTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
@@ -51,6 +56,6 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 		$cd3 = new CacheData('recursion', $ck3);
 		$cd1->appendRecursionData($cd2);
 		$cd2->appendRecursionData($cd3);
-		$this->assertEquals('thisisrecursion', $cd1->stringify(CacheRAM::singleton()));
+		$this->assertEquals('thisisrecursion', $cd1->stringify(Cachearium\Backend\CacheRAM::singleton()));
 	}
 }
