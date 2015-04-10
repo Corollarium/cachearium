@@ -1,5 +1,9 @@
 <?php
 
+use Cachearium\CacheAbstract;
+use Cachearium\Backend\CacheMemcached;
+
+
 function cacheCallback() {
 	static $count = 1;
 	$count++;
