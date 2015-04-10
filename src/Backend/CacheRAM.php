@@ -67,17 +67,17 @@ class CacheRAM extends CacheAbstract {
 	 * @return CacheData
 	 * @throws NotCachedException
 	 */
-	public function getDataK(CacheKey $k) {
-		$cd = CacheData::unserialize($this->getK($k));
+	public function getData(CacheKey $k) {
+		$cd = CacheData::unserialize($this->get($k));
 
 		if ($cd->checkUpdateToDate($this)) {
 			return $cd;
 		}
-		$this->deleteK($k);
+		$this->delete($k);
 		throw new NotCachedException();
 	}
 
-	public function incrementK($value, CacheKey $k, $default = 0) {
+	public function increment($value, CacheKey $k, $default = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -102,7 +102,7 @@ class CacheRAM extends CacheAbstract {
 		return $this->storage[$idx][$sub];
 	}
 
-	public function getK(CacheKey $k) {
+	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			throw new NotCachedException();
@@ -128,7 +128,7 @@ class CacheRAM extends CacheAbstract {
 		throw new NotCachedException();
 	}
 
-	public function storeK($data, CacheKey $k, $lifetime = 0) {
+	public function store($data, CacheKey $k, $lifetime = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -147,7 +147,7 @@ class CacheRAM extends CacheAbstract {
 		return true;
 	}
 
-	public function deleteK(CacheKey $k) {
+	public function delete(CacheKey $k) {
 		if (!is_string($k->sub)) {
 			$sub = md5(serialize($k->sub));
 		}
