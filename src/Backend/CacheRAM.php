@@ -161,7 +161,7 @@ class CacheRAM extends CacheAbstract {
 		return true;
 	}
 
-	public function clean($base, $id) {
+	public function cleanP($base, $id) {
 		unset($this->storage[$base . $id]);
 		return true;
 	}

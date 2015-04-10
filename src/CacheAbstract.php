@@ -278,7 +278,7 @@ abstract class CacheAbstract {
 	 * @return boolean true if no problem
 	 */
 	public function clean(CacheKey $k) {
-		return $this->clean($k->getBase(), $k->getId());
+		return $this->cleanP($k->getBase(), $k->getId());
 	}
 
 	/**
