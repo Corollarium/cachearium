@@ -77,7 +77,7 @@ abstract class CacheAbstract {
 	static public function factory($backend) {
 		$classname = 'Cache' . $backend;
 		if (!class_exists($classname)) {
-			throw new CacheInvalidBackendException("Class does not exist");
+			throw new Exceptions\CacheInvalidBackendException("Class does not exist");
 		}
 		return $classname::singleton();
 	}
