@@ -156,7 +156,7 @@ abstract class CacheAbstract {
 	 * @see getK
 	 */
 	public function getP($base, $id, $sub = null) {
-		return $this->getK(new CacheKey($base, $id, $sub));
+		return $this->get(new CacheKey($base, $id, $sub));
 	}
 
 	/**
@@ -166,7 +166,7 @@ abstract class CacheAbstract {
 	 * @throws NotCachedException
 	 */
 	public function getData(CacheKey $k) {
-		$cd = CacheData::unserialize($this->getK($k));
+		$cd = CacheData::unserialize($this->get($k));
 		if ($cd->checkUpdateToDate($this)) {
 			return $cd;
 		}
@@ -174,7 +174,7 @@ abstract class CacheAbstract {
 	}
 
 	public function getDataP($base, $id, $sub = null) {
-		return $this->getDataK(new CacheKey($base, $id, $sub));
+		return $this->getData(new CacheKey($base, $id, $sub));
 	}
 
 	/**
@@ -190,7 +190,7 @@ abstract class CacheAbstract {
 		$retval = [];
 		foreach ($cacheid as $k => $c) {
 			try {
-				$retval[$k] = $this->getK($c);
+				$retval[$k] = $this->get($c);
 			}
 			catch (NotCachedException $e) {
 				// if there is a callback, call it
@@ -240,7 +240,7 @@ abstract class CacheAbstract {
 	 * @see store()
 	 */
 	public function saveP($data, $base, $id, $sub = null, $lifetime = 0) {
-		return $this->storeK($data, new CacheKey($base, $id, $sub), $lifetime);
+		return $this->store($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
 
 	/**
@@ -252,11 +252,11 @@ abstract class CacheAbstract {
 	 * @see store()
 	 */
 	public function storeP($data, $base, $id, $sub = null, $lifetime = 0) {
-		return $this->storeK($data, new CacheKey($base, $id, $sub), $lifetime);
+		return $this->store($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
 
 	public function storeData(CacheData $data, $lifetime = 0) {
-		return $this->storeK($data->updateDependenciesHash($this)->serialize(), $data->key, $lifetime);
+		return $this->store($data->updateDependenciesHash($this)->serialize(), $data->key, $lifetime);
 	}
 
 	/**
@@ -268,7 +268,7 @@ abstract class CacheAbstract {
 	abstract public function delete(CacheKey $k);
 
 	public function deleteP($base, $id, $sub = null) {
-		return $this->deleteK(new CacheKey($base, $id, $sub));
+		return $this->delete(new CacheKey($base, $id, $sub));
 	}
 
 	/**
@@ -322,15 +322,15 @@ abstract class CacheAbstract {
 	public function start(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		$this->extraSub($k->sub);
 
-		return $this->recursivestartK($k, $lifetime, $print, $fail);
+		return $this->recursivestart($k, $lifetime, $print, $fail);
 	}
 
 	public function recursiveStartP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
-		return $this->recursivestartK(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
+		return $this->recursivestart(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
 
 	public function startP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
-		return $this->startK(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
+		return $this->start(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
 
 	/**
@@ -340,7 +340,7 @@ abstract class CacheAbstract {
 	 * @param callable $c
 	 */
 	public function startCallback(CacheKey $k, callable $c, $lifetime = null) {
-		$data = $this->startK($k, $lifetime);
+		$data = $this->start($k, $lifetime);
 		if (!$data) {
 			$c();
 			$this->end();
@@ -555,7 +555,7 @@ abstract class CacheAbstract {
 		// check if we are inside another cache for automatic dependencies.
 		$cachedata = null;
 		try {
-			$cachedata = $this->getDataK($k);
+			$cachedata = $this->getData($k);
 
 			if (!$cachedata->checkUpdateToDate($this)) {
 				// stale
@@ -596,7 +596,7 @@ abstract class CacheAbstract {
 				return $retval;
 			}
 			catch (NotCachedException $e) {
-				$this->deleteK($k); // clear recursively
+				$this->delete($k); // clear recursively
 				if ($this->inloop) {
 					throw $e;
 				}
