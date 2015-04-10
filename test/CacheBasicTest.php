@@ -33,13 +33,13 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		// enable
 		$this->assertTrue($cache->isEnabled());
-		$cache->enable(false);
+		$cache->setEnabled(false);
 		$this->assertFalse($cache->isEnabled());
-		$cache->enable(true);
+		$cache->setEnabled(true);
 		$this->assertTrue($cache->isEnabled());
 		$cache->disable();
 		$this->assertFalse($cache->isEnabled());
-		$cache->enable(true);
+		$cache->enable();
 		$this->assertTrue($cache->isEnabled());
 
 		$cache->setDefaultLifetime(3600);
