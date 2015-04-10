@@ -45,21 +45,21 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(3600, $cache->getDefaultLifetime());
 
 		$key1 = new CacheKey($base, 1);
-		$cache->cleanK($key1);
+		$cache->clean($key1);
 
 		try {
-			$data = $cache->getK($key1);
+			$data = $cache->get($key1);
 			$this->fail();
 		}
 		catch (NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 
-		$retval = $cache->storeK(234, $key1);
+		$retval = $cache->store(234, $key1);
 		$this->assertTrue($retval);
 
 		try {
-			$data = $cache->getK($key1);
+			$data = $cache->get($key1);
 			$this->assertEquals(234, $data);
 		}
 		catch (NotCachedException $e) {
@@ -69,16 +69,16 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		// sleep(1);
 
 		try {
-			$data = $cache->getK($key1);
+			$data = $cache->get($key1);
 			$this->assertEquals(234, $data);
 		}
 		catch (NotCachedException $e) {
 			$this->fail();
 		}
 
-		$cache->cleanK($key1);
+		$cache->clean($key1);
 		try {
-			$data = $cache->getK($key1);
+			$data = $cache->get($key1);
 			$this->fail();
 		}
 		catch (NotCachedException $e) {
@@ -88,28 +88,28 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$key2 = new CacheKey($base, 2, 'a');
 		$key3 = new CacheKey($base, 3, 'a');
 		// now change again and delete
-		$retval = $cache->storeK(234, $key2);
+		$retval = $cache->store(234, $key2);
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->getK($key2);
+			$data = $cache->get($key2);
 			$this->assertEquals(234, $data);
 		}
 		catch (NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->deleteK($key2));
+		$this->assertTrue($cache->delete($key2));
 
 		// test null
-		$retval = $cache->storeK(null, $key3);
+		$retval = $cache->store(null, $key3);
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->getK($key3);
+			$data = $cache->get($key3);
 			$this->assertEquals(null, $data);
 		}
 		catch (NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->deleteK($key3));
+		$this->assertTrue($cache->delete($key3));
 
 		$this->assertArrayHasKey(CacheLogEnum::ACCESSED, $cache->getLogSummary());
 		$this->assertGreaterThan(0, $cache->getLogSummary()[CacheLogEnum::ACCESSED]);
@@ -145,11 +145,11 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		// clean
 		$key1 = new CacheKey($base, 1);
-		$cache->cleanK($key1);
+		$cache->clean($key1);
 
 		// nothing there
 		try {
-			$data = $cache->getK($key1);
+			$data = $cache->get($key1);
 			$this->fail();
 		}
 		catch (NotCachedException $e) {
@@ -163,7 +163,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		// get
 		try {
-			$data = $cache->getDataK($key1);
+			$data = $cache->getData($key1);
 			$this->assertInstanceOf('CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
@@ -174,7 +174,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		sleep(1);
 
 		try {
-			$data = $cache->getDataK($key1);
+			$data = $cache->getData($key1);
 			$this->assertInstanceOf('CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
@@ -183,9 +183,9 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		}
 
 		// clean
-		$cache->cleanK($key1);
+		$cache->clean($key1);
 		try {
-			$data = $cache->getDataK($key1);
+			$data = $cache->getData($key1);
 			$this->fail();
 		}
 		catch (NotCachedException $e) {
@@ -199,27 +199,27 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$retval = $cache->storeData(new CacheData(234, $key2));
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->getDataK($key2);
+			$data = $cache->getData($key2);
 			$this->assertInstanceOf('CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
 		catch (NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->deleteK($key2));
+		$this->assertTrue($cache->delete($key2));
 
 		// test null
 		$retval = $cache->storeData(new CacheData(null, $key3));
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->getDataK($key3);
+			$data = $cache->getData($key3);
 			$this->assertInstanceOf('CacheData', $data);
 			$this->assertEquals(null, $data->getFirstData());
 		}
 		catch (NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->deleteK($key3));
+		$this->assertTrue($cache->delete($key3));
 	}
 
 	public function testgetStoreDataRAM() {
@@ -253,7 +253,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		// check if it is cached
 		try {
-			$data = $cache->getDataK($key1);
+			$data = $cache->getData($key1);
 			$this->assertInstanceOf('CacheData', $data);
 			$this->assertEquals('xxxx', $data->getFirstData());
 		}
@@ -266,7 +266,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		// get the original and it should be uncached
 		try {
-			$data = $cache->getDataK($key1);
+			$data = $cache->getData($key1);
 			$this->fail();
 		}
 		catch (NotCachedException $e) {
