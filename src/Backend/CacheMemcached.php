@@ -3,6 +3,7 @@
 namespace Cachearium\Backend;
 
 use Cachearium\Backend\CacheRAM;
+use Cachearium\CacheLogEnum;
 use Cachearium\CacheKey;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -288,7 +289,7 @@ class CacheMemcached extends CacheRAM {
 
 		$group = $this->getGroupString(new CacheKey($base, $id));
 
-		parent::clean($base, $id);
+		parent::cleanP($base, $id);
 		return $this->memcached->increment($group);
 	}
 
