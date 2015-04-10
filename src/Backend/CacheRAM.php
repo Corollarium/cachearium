@@ -8,6 +8,7 @@ use Cachearium\CacheData;
 use Cachearium\CacheLogEnum;
 use Cachearium\Exceptions\NotCachedException;
 
+
 /**
  * This class caches on local RAM, only for the duration of this execution.
  *
