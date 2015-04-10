@@ -15,9 +15,12 @@
         </testsuite>
     </testsuites>
 	<filter>
-		<blacklist>
-			<directory>src/Backend/external</directory>
-			<directory>test/</directory>
-		</blacklist>
+		<whitelist>
+			<directory suffix=".php">./src</directory>
+			<exclude>
+				<directory>./src/Backend/external</directory>
+				<directory>test/</directory>
+			</exclude>
+		</whitelist>
 	</filter>
 </phpunit>

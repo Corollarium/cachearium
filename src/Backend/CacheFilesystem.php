@@ -193,9 +193,11 @@ class CacheFilesystem extends CacheAbstract {
 	 * @return boolean true if no problem
 	 */
 	public function cleanP($base, $id) {
+		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$group = $this->hashKey(new CacheKey($base, $id));
 		$retval = $this->cache->clean($group, 'ingroup');

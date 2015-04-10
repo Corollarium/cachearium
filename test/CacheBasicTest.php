@@ -12,7 +12,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
 	static public function setUpBeforeClass() {
-		CacheMemcached::singleton([['localhost', 11211]]); // init server
+		CacheMemcached::singleton()->addServers([['localhost', 11211]]); // init server
 		CacheAbstract::clearAll();
 	}
 
@@ -298,8 +298,43 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function clear(CacheAbstract $cache) {
+		$key = new CacheKey('clear', 'it');
+		$cd = new CacheData(789, $key);
+		$this->assertTrue($cache->storeData($cd));
+		$cache->clear();
+		try {
+			$cache->get($key);
+			$this->fail();
+		}
+		catch (Cachearium\Exceptions\NotCachedException $e) {
+			$this->assertTrue(true);
+		}
+	}
+
+	public function testClearRAM() {
+		$cache = CacheRAM::singleton();
+		if ($cache->isEnabled()) {
+			$this->clear($cache);
+		}
+	}
+
+	public function testClearMemcached() {
+		$cache = CacheMemcached::singleton();
+		if ($cache->isEnabled()) {
+			$this->clear($cache);
+		}
+	}
+
+	public function testClearFS() {
+		$cache = CacheFilesystem::singleton();
+		if ($cache->isEnabled()) {
+			$this->clear($cache);
+		}
+	}
 	public function increment(CacheAbstract $cache) {
 		$key = new CacheKey('increment', 'it');
+		$cache->delete($key);
 		$this->assertEquals(5, $cache->increment(1, $key, 5));
 		$this->assertEquals(6, $cache->increment(1, $key, 5));
 	}
@@ -321,7 +356,13 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	public function testIncrementFS() {
 		$cache = CacheFilesystem::singleton();
 		if ($cache->isEnabled()) {
-			// TODO $this->increment($cache);
+			try {
+				$this->increment($cache);
+				$this->fail();
+			}
+			catch (Cachearium\Exceptions\CacheUnsupportedOperation $e) {
+				$this->assertTrue(true);
+			}
 		}
 	}
 }
