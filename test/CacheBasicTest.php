@@ -1,6 +1,7 @@
 <?php
 
 use Cachearium\CacheAbstract;
+use Cachearium\CacheKey;
 use Cachearium\Backend\CacheMemcached;
 use Cachearium\Backend\CacheRAM;
 use Cachearium\Backend\CacheFilesystem;
