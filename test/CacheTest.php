@@ -58,7 +58,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$cache->clean($base, 1);
 
 		try {
-			$data = $cache->get($base, 1);
+			$data = $cache->getP($base, 1);
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
@@ -69,7 +69,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($retval);
 
 		try {
-			$data = $cache->get($base, 1);
+			$data = $cache->getP($base, 1);
 			$this->assertEquals(234, $data);
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
@@ -79,16 +79,16 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		sleep(1);
 
 		try {
-			$data = $cache->get($base, 1);
+			$data = $cache->getP($base, 1);
 			$this->assertEquals(234, $data);
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 
-		$cache->clean($base, 1);
+		$cache->cleanP($base, 1);
 		try {
-			$data = $cache->get($base, 1);
+			$data = $cache->getP($base, 1);
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
@@ -99,25 +99,25 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$retval = $cache->storeP(234, $base, 2, 'a');
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->get($base, 2, 'a');
+			$data = $cache->getP($base, 2, 'a');
 			$this->assertEquals(234, $data);
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->delete($base, 2, 'a'));
+		$this->assertTrue($cache->deleteP($base, 2, 'a'));
 
 		// test null
 		$retval = $cache->storeP(null, $base, 3, 'a');
 		$this->assertEquals(true, $retval);
 		try {
-			$data = $cache->get($base, 3, 'a');
+			$data = $cache->getP($base, 3, 'a');
 			$this->assertEquals(null, $data);
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
-		$this->assertTrue($cache->delete($base, 3, 'a'));
+		$this->assertTrue($cache->deleteP($base, 3, 'a'));
 	}
 
 	public function testSetGetCleanRAM() {
@@ -252,24 +252,24 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$retval = $cache->storeP(333, $base, $otherid, 'a');
 		$this->assertEquals(true, $retval);
 
-		$data = $cache->get($base, $id, 'a');
+		$data = $cache->getP($base, $id, 'a');
 		$this->assertEquals(111, $data);
-		$data = $cache->get($base, $id, 'b');
+		$data = $cache->getP($base, $id, 'b');
 		$this->assertEquals(222, $data);
-		$data = $cache->get($base, $otherid, 'a');
+		$data = $cache->getP($base, $otherid, 'a');
 		$this->assertEquals(333, $data);
 
 		$cache->clean($base, $id);
 
 		try {
-			$data = $cache->get($base, $id, 'a');
+			$data = $cache->getP($base, $id, 'a');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
-			$data = $cache->get($base, $otherid, 'a');
+			$data = $cache->getP($base, $otherid, 'a');
 			$this->assertEquals(333, $data);
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
@@ -277,7 +277,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		}
 
 		try {
-			$data = $cache->get($base, $id, 'b');
+			$data = $cache->getP($base, $id, 'b');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
@@ -300,40 +300,40 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$retval = $cache->storeP(444, $otherbase, $otherid, 'a');
 		$this->assertEquals(true, $retval);
 
-		$data = $cache->get($base, $id, 'a');
+		$data = $cache->getP($base, $id, 'a');
 		$this->assertEquals(111, $data);
-		$data = $cache->get($base, $id, 'b');
+		$data = $cache->getP($base, $id, 'b');
 		$this->assertEquals(222, $data);
-		$data = $cache->get($base, $otherid, 'a');
+		$data = $cache->getP($base, $otherid, 'a');
 		$this->assertEquals(333, $data);
-		$data = $cache->get($otherbase, $otherid, 'a');
+		$data = $cache->getP($otherbase, $otherid, 'a');
 		$this->assertEquals(444, $data);
 
 		$cache->clear();
 
 		try {
-			$data = $cache->get($base, $id, 'a');
+			$data = $cache->getP($base, $id, 'a');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
-			$data = $cache->get($base, $id, 'b');
+			$data = $cache->getP($base, $id, 'b');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
-			$data = $cache->get($base, $otherid, 'a');
+			$data = $cache->getP($base, $otherid, 'a');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
-			$data = $cache->get($otherbase, $otherid, 'a');
+			$data = $cache->getP($otherbase, $otherid, 'a');
 			$this->fail();
 		}
 		catch(Cachearium\Exceptions\NotCachedException $e) {
