@@ -39,10 +39,10 @@ class CacheNull extends CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	private function __construct() {
-		$this->enable(false);
+		$this->disable();
 	}
 
-	public function enable($bool = true) {
+	public function enable() {
 	}
 
 	public function get(CacheKey $k) {

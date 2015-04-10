@@ -37,15 +37,15 @@ class CacheAPC extends CacheAbstract {
 	 * @codeCoverageIgnore
 	*/
 	private function __construct() {
-		$this->enable(true);
+		$this->enable();
 	}
 
-	public function enable($boolean) {
+	public function enable() {
 		if (!extension_loaded('apc')) {
 			$this->enabled = false;
 			return false;
 		}
-		return parent::enable($boolean);
+		return parent::enable();
 	}
 
 	private function checkValidArgs($base, $id, $sub) {
