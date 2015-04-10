@@ -94,7 +94,7 @@ class CacheFS extends CacheAbstract {
 		return $group;
 	}
 
-	public function incrementK($value, CacheKey $k, $default = 0) {
+	public function increment($value, CacheKey $k, $default = 0) {
 		throw new CacheUnsupportedOperation();
 	}
 
@@ -106,7 +106,7 @@ class CacheFS extends CacheAbstract {
 	 * @param string $sub If an item is cache in parts, this is used to specify the parts.
 	 * @return string or FALSE if nothing found.
 	 */
-	public function getK(CacheKey $k) {
+	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			throw new NotCachedException();
@@ -142,7 +142,7 @@ class CacheFS extends CacheAbstract {
 	 * @param any $data Data to save in cache
 	 * @return boolean true if no problem
 	 */
-	public function storeK($data, CacheKey $k, $lifetime = -1) {
+	public function store($data, CacheKey $k, $lifetime = -1) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -169,7 +169,7 @@ class CacheFS extends CacheAbstract {
 	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
 	 * @return boolean
 	 */
-	public function deleteK(CacheKey $k) {
+	public function delete(CacheKey $k) {
 		$group = $this->hashKey($k);
 		if (!is_string($k->sub)) {
 			$cacheid = md5(serialize($k->sub));

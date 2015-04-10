@@ -153,7 +153,7 @@ class CacheMemcached extends CacheRAM {
 	 * @param string $sub If an item is cache in parts, this is used to specify the part
 	 * @return string or FALSE if nothing found.
 	 */
-	public function getK(CacheKey $k) {
+	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			throw new NotCachedException();
@@ -164,7 +164,7 @@ class CacheMemcached extends CacheRAM {
 		$should_log = $this->should_log;
 		try {
 			$this->should_log = false;
-			$data = parent::getK($k);
+			$data = parent::get($k);
 			$this->should_log = $should_log;
 			$this->log(CacheLogEnum::PREFETCHED, $k);
 			return $data;
@@ -191,7 +191,7 @@ class CacheMemcached extends CacheRAM {
 			throw new NotCachedException();
 		}
 
-		parent::storeK($x, $k);
+		parent::store($x, $k);
 
 		return $x;
 	}
@@ -224,7 +224,7 @@ class CacheMemcached extends CacheRAM {
 	 * @param string $data Data to save in cache
 	 * @return boolean true if no problem
 	 */
-	public function storeK($data, CacheKey $k, $lifetime = 0) {
+	public function store($data, CacheKey $k, $lifetime = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
@@ -238,7 +238,7 @@ class CacheMemcached extends CacheRAM {
 		$x = $this->memcached->set(
 			$group, serialize($data), 0, $lifetime ? $lifetime : $this->lifetime
 		);
-		parent::storeK($data, $k, $lifetime);
+		parent::store($data, $k, $lifetime);
 
 		return $x;
 	}
@@ -251,7 +251,7 @@ class CacheMemcached extends CacheRAM {
 	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
 	 * @return unknown_type
 	 */
-	public function deleteK(CacheKey $k) {
+	public function delete(CacheKey $k) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			throw new NotCachedException();
@@ -262,7 +262,7 @@ class CacheMemcached extends CacheRAM {
 
 		$this->log(CacheLogEnum::DELETED, $k);
 
-		parent::deleteK($k);
+		parent::delete($k);
 		return $this->memcached->delete($group);
 	}
 
