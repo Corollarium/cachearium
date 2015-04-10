@@ -1,8 +1,10 @@
 {
     "name": "corollarium/cachearium",
     "description": "Cache in your PHP applications. Fast, simple and with easy invalidation.",
-    "license": "BSD",
+    "license": "MIT",
     "type": "library",
+    "homepage": "https://github.com/Corollarium/cachearium",
+    "keywords": ["PHP", "cache"],
     "minimum-stability": "dev",
     "authors": [
         {
