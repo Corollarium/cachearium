@@ -297,4 +297,31 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 			$this->dependency($cache);
 		}
 	}
+
+	public function increment(CacheAbstract $cache) {
+		$key = new CacheKey('increment', 'it');
+		$this->assertEquals(5, $cache->increment(1, $key, 5));
+		$this->assertEquals(6, $cache->increment(1, $key, 5));
+	}
+
+	public function testIncrementRAM() {
+		$cache = CacheRAM::singleton();
+		if ($cache->isEnabled()) {
+			$this->increment($cache);
+		}
+	}
+
+	public function testIncrementMemcached() {
+		$cache = CacheMemcached::singleton([['localhost', 11211]]);
+		if ($cache->isEnabled()) {
+			$this->increment($cache);
+		}
+	}
+
+	public function testIncrementFS() {
+		$cache = CacheFilesystem::singleton();
+		if ($cache->isEnabled()) {
+			// TODO $this->increment($cache);
+		}
+	}
 }
