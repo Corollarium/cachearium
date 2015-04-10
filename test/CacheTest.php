@@ -65,7 +65,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$this->assertTrue(true);
 		}
 
-		$retval = $cache->save(234, $base, 1);
+		$retval = $cache->storeP(234, $base, 1);
 		$this->assertTrue($retval);
 
 		try {
@@ -96,7 +96,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		}
 
 		// now change again and delete
-		$retval = $cache->save(234, $base, 2, 'a');
+		$retval = $cache->storeP(234, $base, 2, 'a');
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->get($base, 2, 'a');
@@ -108,7 +108,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cache->delete($base, 2, 'a'));
 
 		// test null
-		$retval = $cache->save(null, $base, 3, 'a');
+		$retval = $cache->storeP(null, $base, 3, 'a');
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->get($base, 3, 'a');
@@ -216,7 +216,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 				'cvbxxcv' => 234,
 			)
 		);
-		$retval = $cache->save($data, $base, 1);
+		$retval = $cache->storeP($data, $base, 1);
 		$this->assertEquals(true, $retval);
 
 		$data2 = $cache->get($base, 1);
@@ -245,11 +245,11 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$base = 'bigclean';
 		$otherid = '3';
 
-		$retval = $cache->save(111, $base, $id, 'a');
+		$retval = $cache->storeP(111, $base, $id, 'a');
 		$this->assertEquals(true, $retval);
-		$retval = $cache->save(222, $base, $id, 'b');
+		$retval = $cache->storeP(222, $base, $id, 'b');
 		$this->assertEquals(true, $retval);
-		$retval = $cache->save(333, $base, $otherid, 'a');
+		$retval = $cache->storeP(333, $base, $otherid, 'a');
 		$this->assertEquals(true, $retval);
 
 		$data = $cache->get($base, $id, 'a');
@@ -291,13 +291,13 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$otherid = '3';
 		$otherbase = 'bigfoo';
 
-		$retval = $cache->save(111, $base, $id, 'a');
+		$retval = $cache->storeP(111, $base, $id, 'a');
 		$this->assertEquals(true, $retval);
-		$retval = $cache->save(222, $base, $id, 'b');
+		$retval = $cache->storeP(222, $base, $id, 'b');
 		$this->assertEquals(true, $retval);
-		$retval = $cache->save(333, $base, $otherid, 'a');
+		$retval = $cache->storeP(333, $base, $otherid, 'a');
 		$this->assertEquals(true, $retval);
-		$retval = $cache->save(444, $otherbase, $otherid, 'a');
+		$retval = $cache->storeP(444, $otherbase, $otherid, 'a');
 		$this->assertEquals(true, $retval);
 
 		$data = $cache->get($base, $id, 'a');
@@ -420,7 +420,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testClearFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		$this->setBigClean($cache);
 	}
 
