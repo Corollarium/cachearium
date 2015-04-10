@@ -194,7 +194,7 @@ class CacheFilesystem extends CacheAbstract {
 	 * @param string $id Item id
 	 * @return boolean true if no problem
 	 */
-	public function clean($base, $id) {
+	public function cleanP($base, $id) {
 		if (!$this->enabled) {
 			return false;
 		}
