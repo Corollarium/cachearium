@@ -2,6 +2,7 @@
 
 use Cachearium\CacheAbstract;
 use Cachearium\CacheKey;
+use Cachearium\CacheData;
 use Cachearium\Backend\CacheMemcached;
 use Cachearium\Backend\CacheRAM;
 use Cachearium\Backend\CacheFilesystem;
