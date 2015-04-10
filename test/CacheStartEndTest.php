@@ -1,5 +1,9 @@
 <?php
 
+use Cachearium\CacheAbstract;
+use Cachearium\CacheKey;
+use Cachearium\Backend\CacheRAM;
+
 class CacheStartEndTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
@@ -15,7 +19,7 @@ class CacheStartEndTest extends PHPUnit_Framework_TestCase {
 		$key = new CacheKey('startendtest', 'basic', 0);
 
 		// won't be cached.
-		if (!$cache->startK($key)) {
+		if (!$cache->start($key)) {
 			$this->assertTrue(true);
 			echo $expected;
 		}
@@ -28,7 +32,7 @@ class CacheStartEndTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $data);
 
 		// now it should be cached
-		$this->assertEquals($expected, $cache->startK($key, null, false));
+		$this->assertEquals($expected, $cache->start($key, null, false));
 	}
 
 	public function testStartBasicRAM() {
@@ -41,18 +45,18 @@ class CacheStartEndTest extends PHPUnit_Framework_TestCase {
 	private function _startMultiLevel(CacheAbstract $cache) {
 		$expected = ["first level", "second level 1", "second level 2", "second level 3"];
 		$i = 0;
-		if (!$cache->startK(new CacheKey('startmultilevel', 'first', 0), null, false)) {
+		if (!$cache->start(new CacheKey('startmultilevel', 'first', 0), null, false)) {
 			$this->assertTrue(true);
 			echo $expected[$i++];
-			if (!$cache->startK(new CacheKey('startmultilevel', 'second', $i), null, false)) {
+			if (!$cache->start(new CacheKey('startmultilevel', 'second', $i), null, false)) {
 				echo $expected[$i++];
 				$cache->end();
 			}
-			if (!$cache->startK(new CacheKey('startmultilevel', 'second', $i), null, false)) {
+			if (!$cache->start(new CacheKey('startmultilevel', 'second', $i), null, false)) {
 				echo $expected[$i++];
 				$cache->end();
 			}
-			if (!$cache->startK(new CacheKey('startmultilevel', 'second', $i), null, false)) {
+			if (!$cache->start(new CacheKey('startmultilevel', 'second', $i), null, false)) {
 				echo $expected[$i++];
 				$cache->end();
 			}
@@ -75,14 +79,14 @@ class CacheStartEndTest extends PHPUnit_Framework_TestCase {
 		$expected = ["first level", "second level 1", "second level 2", "second level 3"];
 		$i = 0;
 		$data = '';
-		if (!($data = $cache->startK(new CacheKey('startnested', 'first', 0), null, false))) {
+		if (!($data = $cache->start(new CacheKey('startnested', 'first', 0), null, false))) {
 			$this->assertTrue(true);
 			echo $expected[$i++];
-			if (!$cache->startK(new CacheKey('startnested', 'second', $i), null, false)) {
+			if (!$cache->start(new CacheKey('startnested', 'second', $i), null, false)) {
 				echo $expected[$i++];
-				if (!$cache->startK(new CacheKey('startnested', 'second', $i), null, false)) {
+				if (!$cache->start(new CacheKey('startnested', 'second', $i), null, false)) {
 					echo $expected[$i++];
-					if (!$cache->startK(new CacheKey('startnested', 'second', $i), null, false)) {
+					if (!$cache->start(new CacheKey('startnested', 'second', $i), null, false)) {
 						echo $expected[$i++];
 						$cache->end();
 					}
