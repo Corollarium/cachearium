@@ -76,16 +76,17 @@ abstract class CacheAbstract {
 
 	/**
 	 * Returns a cache
+	 *
 	 * @param string $backend
 	 * @throws CacheInvalidBackendException
-	 * @return Cache
+	 * @return CacheAbstract
 	 */
-	static public function factory($backend, $params = []) {
+	static public function factory($backend) {
 		$classname = 'Cache' . $backend;
 		if (!class_exists($classname)) {
 			throw new CacheInvalidBackendException("Class does not exist");
 		}
-		return $classname::singleton($params);
+		return $classname::singleton();
 	}
 
 	/**
