@@ -1,8 +1,12 @@
 <?php
 
 use Cachearium\CacheAbstract;
+use Cachearium\CacheKey;
+use Cachearium\CacheData;
+use Cachearium\CacheLogEnum;
 use Cachearium\Backend\CacheMemcached;
-
+use Cachearium\Backend\CacheRAM;
+use Cachearium\Backend\CacheFilesystem;
 
 function cacheCallback() {
 	static $count = 1;
@@ -122,7 +126,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetCleanFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		$this->setGetClean($cache);
 	}
 
@@ -191,7 +195,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testStartEndFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		$this->startEnd($cache);
 	}
 
