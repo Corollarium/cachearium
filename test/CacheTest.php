@@ -61,7 +61,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 1);
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 
@@ -72,7 +72,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 1);
 			$this->assertEquals(234, $data);
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 
@@ -82,7 +82,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 1);
 			$this->assertEquals(234, $data);
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 
@@ -91,7 +91,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 1);
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 
@@ -102,7 +102,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 2, 'a');
 			$this->assertEquals(234, $data);
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 		$this->assertTrue($cache->delete($base, 2, 'a'));
@@ -114,7 +114,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, 3, 'a');
 			$this->assertEquals(null, $data);
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 		$this->assertTrue($cache->delete($base, 3, 'a'));
@@ -265,14 +265,14 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, $id, 'a');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
 			$data = $cache->get($base, $otherid, 'a');
 			$this->assertEquals(333, $data);
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
 
@@ -280,7 +280,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, $id, 'b');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 	}
@@ -315,28 +315,28 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			$data = $cache->get($base, $id, 'a');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
 			$data = $cache->get($base, $id, 'b');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
 			$data = $cache->get($base, $otherid, 'a');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 		try {
 			$data = $cache->get($otherbase, $otherid, 'a');
 			$this->fail();
 		}
-		catch (NotCachedException $e) {
+		catch(Cachearium\Exceptions\NotCachedException $e) {
 			$this->assertTrue(true);
 		}
 	}
@@ -444,7 +444,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 			}
 			$this->assertFalse(true);
 		}
-		catch (CacheKeyClashException $e) {
+		catch(Cachearium\Exceptions\CacheKeyClashException $e) {
 			$this->assertTrue(true);
 		}
 	}
