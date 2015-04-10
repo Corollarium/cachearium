@@ -1,0 +1,19 @@
+{
+    "name": "corollarium/cachearium",
+    "description": "Cache in your PHP applications. Fast, simple and with easy invalidation.",
+    "license": "BSD",
+    "type": "library",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Corollarium",
+            "email": "email@corollarium.com"
+        }
+    ],
+    "require": {
+        "php":                                  ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit":                      "4.1.*"
+    }
+}
