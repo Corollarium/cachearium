@@ -12,8 +12,8 @@ require_once(__DIR__ . '/CacheData.php');
 require_once(__DIR__ . '/CacheAbstract.php');
 
 // backends
-require_once(__DIR__ . '/backends/CacheNull.php');
-require_once(__DIR__ . '/backends/CacheRAM.php');
+require_once(__DIR__ . '/Backend/CacheNull.php');
+require_once(__DIR__ . '/Backend/CacheRAM.php');
 // require_once(__DIR__ . '/backends/CacheAPC.php');
-require_once(__DIR__ . '/backends/CacheFilesystem.php');
-require_once(__DIR__ . '/backends/CacheMemcached.php');
+require_once(__DIR__ . '/Backend/CacheFilesystem.php');
+require_once(__DIR__ . '/Backend/CacheMemcached.php');
