@@ -148,12 +148,12 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$cache = CacheMemcached::singleton([['localhost', 11211]]);
 
 		// save.
-		$retval = $cache->storeK($data, $key);
+		$retval = $cache->store($data, $key);
 		$this->assertEquals(true, $retval);
 
 		// get. We should have a local cache.
 		$startfetches = $cache->getFetches();
-		$data2 = $cache->getK($key);
+		$data2 = $cache->get($key);
 		$this->assertEquals($data, $data2);
 		$this->assertEquals($startfetches, $cache->getFetches());
 
@@ -166,7 +166,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$this->markTestSkipped();
 		// get. We should have a local cache.
 		$startfetches = $cache->getFetches();
-		$data2 = $cache->getK($key);
+		$data2 = $cache->get($key);
 		$this->assertEquals($data, $data2);
 		$this->assertEquals($startfetches, $cache->getFetches());
 	}
@@ -229,7 +229,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		$this->serialize($cache);
 	}
 
@@ -348,7 +348,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCleanFS() {
-		$cache = CacheFS::singleton();
+		$cache = CacheFilesystem::singleton();
 		$this->setBigClean($cache);
 		$this->setBigClear($cache);
 	}
