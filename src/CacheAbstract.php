@@ -71,7 +71,7 @@ abstract class CacheAbstract {
 	 * Returns a cache
 	 *
 	 * @param string $backend
-	 * @throws CacheInvalidBackendException
+	 * @throws Cachearium\Exceptions\CacheInvalidBackendException
 	 * @return CacheAbstract
 	 */
 	static public function factory($backend) {

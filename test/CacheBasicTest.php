@@ -23,7 +23,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 			CacheAbstract::factory("invalidbackend");
 			$this->assertTrue(false);
 		}
-		catch (CacheInvalidBackendException $e) {
+		catch (Cachearium\Exceptions\CacheInvalidBackendException $e) {
 			$this->assertTrue(true);
 		}
 	}
@@ -165,7 +165,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		// get
 		try {
 			$data = $cache->getData($key1);
-			$this->assertInstanceOf('CacheData', $data);
+			$this->assertInstanceOf('Cachearium\CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
 		catch (Cachearium\Exceptions\NotCachedException $e) {
@@ -176,7 +176,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 		try {
 			$data = $cache->getData($key1);
-			$this->assertInstanceOf('CacheData', $data);
+			$this->assertInstanceOf('Cachearium\CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
 		catch (Cachearium\Exceptions\NotCachedException $e) {
@@ -201,7 +201,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->getData($key2);
-			$this->assertInstanceOf('CacheData', $data);
+			$this->assertInstanceOf('Cachearium\CacheData', $data);
 			$this->assertEquals(234, $data->getFirstData());
 		}
 		catch (Cachearium\Exceptions\NotCachedException $e) {
@@ -214,7 +214,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->getData($key3);
-			$this->assertInstanceOf('CacheData', $data);
+			$this->assertInstanceOf('Cachearium\CacheData', $data);
 			$this->assertEquals(null, $data->getFirstData());
 		}
 		catch (Cachearium\Exceptions\NotCachedException $e) {
