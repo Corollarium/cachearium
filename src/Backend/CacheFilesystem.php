@@ -32,7 +32,7 @@ class CacheFilesystem extends CacheAbstract {
 		static $instances;
 
 		if (!isset($instances)) {
-			$instances = new CacheFS();
+			$instances = new CacheFilesystem();
 		}
 		return $instances;
 	}
@@ -78,7 +78,7 @@ class CacheFilesystem extends CacheAbstract {
 	public function enable($boolean = true) {
 		if ($boolean) {
 			// ok, go
-			$this->cache = new Cache_Lite_Timed(
+			$this->cache = new \Cache_Lite_Timed(
 				array(
 					'cacheDir' => $this->path,
 					'lifeTime' => $this->getDefaultLifetime(), // in seconds
@@ -194,7 +194,7 @@ class CacheFilesystem extends CacheAbstract {
 	 * @param string $id Item id
 	 * @return boolean true if no problem
 	 */
-	public function clean($base, $id) {
+	public function cleanP($base, $id) {
 		if (!$this->enabled) {
 			return false;
 		}
