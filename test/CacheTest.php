@@ -175,13 +175,13 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$base = 'startend';
 		$cache->cleanP($base, 1);
 
-		$this->assertFalse($cache->recursivestart($base, 1));
+		$this->assertFalse($cache->recursiveStartP($base, 1));
 		echo 'start!';
 		$cache->recursiveend(false);
 
 		ob_start();
 		ob_implicit_flush(false);
-		$this->assertTrue($cache->recursivestart($base, 1));
+		$this->assertTrue($cache->recursiveStartP($base, 1));
 		$data = ob_get_contents();
 		ob_end_clean();
 
@@ -209,7 +209,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 	private function serialize(CacheAbstract $cache) {
 		$base = 'serialize';
 
-		$cache->clean($base, 1);
+		$cache->cleanP($base, 1);
 
 		$data = array('awer' => 132,
 			array('awerawer' => 23423,
@@ -436,8 +436,8 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 
 		try {
 			ob_start();
-			if (!$cache->start('testClash', 0)) {
-				if (!$cache->start('testClash', 0)) {
+			if (!$cache->startP('testClash', 0)) {
+				if (!$cache->startP('testClash', 0)) {
 					$cache->end();
 				}
 				$cache->end();
