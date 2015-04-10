@@ -1,21 +1,9 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
 
-/**
- * @deprecated for backward compatibility only
- * @author corollarium
- *
- */
-abstract class Cache extends CacheAbstract {
-}
+namespace Cachearium;
 
 /**
  * Abstract class for caches
- *
- * @author brunobg
  *
  */
 abstract class CacheAbstract {

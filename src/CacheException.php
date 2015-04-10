@@ -1,13 +1,10 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
+
+namespace Cachearium;
 
 /**
  * Thrown when the backend does not exists or cannot be instantiated
  *
- * @author corollarium
  * @codeCoverageIgnore
  */
 class CacheInvalidBackendException extends Exception {

@@ -1,9 +1,6 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
 
+namespace Cachearium;
 
 define('CACHEDATA_TYPE_CALLBACK', 'callback');
 define('CACHEDATA_TYPE_RECURSION', 'recursion');
@@ -12,7 +9,6 @@ define('CACHEDATA_TYPE_DATA', 'data');
 
 /**
  * Class used to store cache data in start()/get();
- * @author corollarium
  *
  */
 class CacheData {

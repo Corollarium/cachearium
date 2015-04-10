@@ -1,8 +1,6 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
+
+namespace Cachearium;
 
 /**
  * Interface for classes which cache data.

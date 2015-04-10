@@ -1,13 +1,9 @@
 <?php
-/**
- * Corollarium Tecnologia Ltda.
- * Copyright (c) 2008-2014 Corollarium Tecnologia Ltda.
- */
+
+namespace Cachearium;
 
 /**
  * Cache keys have three conceptual levels. This is useful for namespacing.
- *
- * @author corollarium
  *
  */
 class CacheKey {
