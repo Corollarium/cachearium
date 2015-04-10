@@ -254,18 +254,6 @@ abstract class CacheAbstract {
 	 * @param number $lifetime
 	 * @see store()
 	 */
-	public function saveP($data, $base, $id, $sub = null, $lifetime = 0) {
-		return $this->store($data, new CacheKey($base, $id, $sub), $lifetime);
-	}
-
-	/**
-	 * @param unknown $data
-	 * @param unknown $base
-	 * @param unknown $sub
-	 * @param unknown $id
-	 * @param number $lifetime
-	 * @see store()
-	 */
 	public function storeP($data, $base, $id, $sub = null, $lifetime = 0) {
 		return $this->store($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
