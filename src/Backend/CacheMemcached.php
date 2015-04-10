@@ -3,6 +3,7 @@
 namespace Cachearium\Backend;
 
 use Cachearium\Backend\CacheRAM;
+use Cachearium\CacheKey;
 
 /**
  * Cache class which uses memcache.
@@ -94,14 +95,14 @@ class CacheMemcached extends CacheRAM {
 			$this->enable(false);
 			return;
 		}
-		$this->memcached = new Memcached;
+		$this->memcached = new \Memcached;
 		if (!$this->memcached) {
 			$this->enable(false);
 			return;
 		}
 
-		// TODO $this->memcache->setOption(Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
-		$this->memcached->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
+		// TODO $this->memcache->setOption(\Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
+		$this->memcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
 		$this->lifetime = 3600;
 	}
 
