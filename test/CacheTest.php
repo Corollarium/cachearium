@@ -55,7 +55,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cache->isEnabled());
 		$cache->setDefaultLifetime(3600);
 		$this->assertEquals(3600, $cache->getDefaultLifetime());
-		$cache->clean($base, 1);
+		$cache->cleanP($base, 1);
 
 		try {
 			$data = $cache->getP($base, 1);
@@ -173,7 +173,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 
 	private function startEnd(CacheAbstract $cache) {
 		$base = 'startend';
-		$cache->clean($base, 1);
+		$cache->cleanP($base, 1);
 
 		$this->assertFalse($cache->recursivestart($base, 1));
 		echo 'start!';
@@ -219,7 +219,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$retval = $cache->storeP($data, $base, 1);
 		$this->assertEquals(true, $retval);
 
-		$data2 = $cache->get($base, 1);
+		$data2 = $cache->getP($base, 1);
 		$this->assertEquals($data2, $data);
 	}
 
@@ -259,7 +259,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$data = $cache->getP($base, $otherid, 'a');
 		$this->assertEquals(333, $data);
 
-		$cache->clean($base, $id);
+		$cache->cleanP($base, $id);
 
 		try {
 			$data = $cache->getP($base, $id, 'a');

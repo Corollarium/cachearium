@@ -5,6 +5,7 @@ namespace Cachearium\Backend;
 use Cachearium\Backend\CacheRAM;
 use Cachearium\CacheLogEnum;
 use Cachearium\CacheKey;
+use Cachearium\Exceptions\NotCachedException;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
