@@ -247,17 +247,24 @@ abstract class CacheAbstract {
 	abstract public function store($data, CacheKey $k, $lifetime = 0);
 
 	/**
-	 * @param unknown $data
-	 * @param unknown $base
-	 * @param unknown $sub
-	 * @param unknown $id
+	 * @param any $data
+	 * @param string $base
+	 * @param string $sub
+	 * @param string $id
 	 * @param number $lifetime
+	 * @return boolean true if no problem
 	 * @see store()
 	 */
 	public function storeP($data, $base, $id, $sub = null, $lifetime = 0) {
 		return $this->store($data, new CacheKey($base, $id, $sub), $lifetime);
 	}
 
+	/**
+	 * @param CacheData $data
+	 * @param number $lifetime
+	 * @return boolean true if no problem
+	 * @see store()
+	 */
 	public function storeData(CacheData $data, $lifetime = 0) {
 		return $this->store($data->updateDependenciesHash($this)->serialize(), $data->key, $lifetime);
 	}
