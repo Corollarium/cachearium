@@ -2,13 +2,6 @@
 
 namespace Cachearium;
 
-use Cachearium\CacheInvalidBackendException;
-use Cachearium\NotCachedException;
-use Cachearium\CacheInvalidParameterException;
-use Cachearium\CacheKeyClashException;
-use Cachearium\CacheInvalidDataException;
-use Cachearium\CacheUnsupportedOperation;
-
 /**
  * Abstract class for caches
  *
