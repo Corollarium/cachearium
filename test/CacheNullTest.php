@@ -1,5 +1,10 @@
 <?php
 
+use Cachearium\CacheAbstract;
+use Cachearium\CacheData;
+use Cachearium\CacheKey;
+use Cachearium\Backend\CacheNull;
+
 class CacheNullTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
@@ -7,10 +12,10 @@ class CacheNullTest extends PHPUnit_Framework_TestCase {
 		$key = new CacheKey('any', 'thing');
 
 		$cache = CacheNull::singleton();
-		$this->assertInstanceOf('CacheNull', $cache);
+		$this->assertInstanceOf('Cachearium\Backend\CacheNull', $cache);
 
 		$cache = CacheAbstract::factory('Null');
-		$this->assertInstanceOf('CacheNull', $cache);
+		$this->assertInstanceOf('Cachearium\Backend\CacheNull', $cache);
 
 		try {
 			$cache->getK($key);

@@ -3,6 +3,10 @@
 namespace Cachearium\Backend;
 
 use Cachearium\CacheAbstract;
+use Cachearium\CacheKey;
+use Cachearium\CacheData;
+use Cachearium\CacheLogEnum;
+use Cachearium\Exceptions\NotCachedException;
 
 /**
  * Null cache class. Does nothing but implements all required methods.
@@ -57,7 +61,7 @@ class CacheNull extends CacheAbstract {
 		return true;
 	}
 
-	public function clean($base, $id) {
+	public function cleanP($base, $id) {
 		return true;
 	}
 
