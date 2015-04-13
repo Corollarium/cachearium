@@ -2,6 +2,19 @@
 
 Cache in your PHP applications. Fast, simple and with easy invalidation.
 
+# Installation
+
+## Composer
+
+Add this to your composer.json:
+
+TODO
+
+## Manual
+
+- Download the package
+- Include `require_once('Cached.php');`
+
 # Use cases/examples
 
 ## Store a single value and invalidate it
