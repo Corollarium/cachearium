@@ -361,16 +361,18 @@ abstract class CacheAbstract {
 	}
 
 	/**
-	 *
+	 * start() using a callable. Same as start()/c()/end().
+	 * 
 	 * @param CacheKey $k
+	 * @param callable $c A callable. Whatever it prints will be cached.
+	 * @param array $cparams parameters for the callback, optional
 	 * @param integer $lifetime
-	 * @param callable $c
 	 */
-	public function startCallback(CacheKey $k, callable $c, $lifetime = null) {
+	public function startCallback(CacheKey $k, callable $c, array $cparams = [], $lifetime = null) {
 		$data = $this->start($k, $lifetime);
 		if (!$data) {
-			$c();
-			$this->end();
+			call_user_func_array($callback, $cparams);
+			$data = $this->end(false);
 		}
 		return $data;
 	}
