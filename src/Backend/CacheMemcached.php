@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class CacheMemcached extends CacheRAM {
 	/**
 	 * The memcache var
-	 * @var Memcached
+	 * @var \Memcached
 	 */
 	private $memcached;
 
