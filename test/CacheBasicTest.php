@@ -256,7 +256,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		// check if it is cached
 		try {
 			$data = $cache->getData($key1);
-			$this->assertInstanceOf('CacheData', $data);
+			$this->assertInstanceOf('Cachearium\CacheData', $data);
 			$this->assertEquals('xxxx', $data->getFirstData());
 		}
 		catch (Cachearium\Exceptions\NotCachedException $e) {
