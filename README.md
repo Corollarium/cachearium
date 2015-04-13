@@ -27,11 +27,11 @@ TODO
 
 This is basic storage.
 
-```
+```php
 $data = 'xxxx';
 
 // store
-$cache = Cache::factory('your backend');
+$cache = CacheAbstract::factory('your backend');
 $cache->store($data, new CacheKey('Namespace', 'Subname'));
 
 // get it later
@@ -53,11 +53,11 @@ $cache->store($data, new CacheKey('Namespace', 'Subname'));
 CacheData provides a more sophisticated class to store values.
 
 
-```
+```php
 $data = 'xxxx';
 
 // store
-$cache = Cache::factory('your backend');
+$cache = CacheAbstract::factory('your backend');
 $cache->storeData(new CacheData($data, new CacheKey('Namespace', 'Subname')));
 
 // get it later
@@ -79,8 +79,8 @@ $cache->storeData((new CacheData($data, new CacheKey('Namespace', 'Subname'));
 You can have multiple dependencies so you can invalidate all cache data that
 relate to a certain key.  
 
-```
-$cache = Cache::factory('your backend');
+```php
+$cache = CacheAbstract::factory('your backend');
 
 // create a storage key and bucket
 $key = new CacheKey('Namespace', 'Subname');
@@ -107,10 +107,10 @@ $cache->invalidate($dep);
 
 ### Example: Store searches and invalidate them when an attribute is written to
 
-```
+```php
 function someSearch() {
 	$key = new CacheKey('search', 'someSearch'); // keys for this data
-	$cache = Cache::factory('backend');
+	$cache = CacheAbstract::factory('backend');
 	try {
 		return $cache->get($key); // TODO
 	}
@@ -140,7 +140,7 @@ function someSearch() {
 function writeSomeStuff() {
 	// changed or added some attribute value in some object
 
-	$cache = Cache::factory('backend');
+	$cache = CacheAbstract::factory('backend');
 	$cache->invalidate(new CacheKey('attribute', 'name')); // invalidates any cache that depends on this key
 }
 ```
@@ -149,7 +149,7 @@ function writeSomeStuff() {
 
 It's likely that you have a MVC application. Model classes can easily cache data
 
-```
+```php
 class Foo extends Model {
 	use Cached;
 	
@@ -161,7 +161,7 @@ class Foo extends Model {
 	}
 	
 	public function cacheClean() {
-		$cache = Cache::factory('backend');
+		$cache = CacheAbstract::factory('backend');
 		$cache->clean('Foo', $this->getId());
 	}
 	
@@ -171,12 +171,12 @@ class Foo extends Model {
 	}
 
 	public function cacheStore($data, $key) {
-		$cache = Cache::factory('backend');
+		$cache = CacheAbstract::factory('backend');
 		return $cache->save($data, 'Foo', $this->getId(), $key);
 	}
 
 	public function cacheGet($key) {
-		$cache = Cache::factory('backend');
+		$cache = CacheAbstract::factory('backend');
 		return $cache->get('Foo', $this->getId(), $key);
 	}
 }
@@ -189,8 +189,8 @@ if you have a list of items and you change one of them, you only invalidate its 
 cache entry and the entry for the whole list. You can regenerate the list with a 
 single DB hit. 
 
-```
-$cache = Cache::factory('your backend');
+```php
+$cache = CacheAbstract::factory('your backend');
 
 $cache->start(new CacheKey('main'));
 
@@ -214,12 +214,12 @@ class Stuff {
 	public function write() {
 		write_some_stuff();
 
-		$cache = Cache::factory('your backend');
+		$cache = CacheAbstract::factory('your backend');
 		$cache->clean($this->getCacheKey());
 	}
 
 	public function render() {
-		$cache = Cache::factory('your backend');
+		$cache = CacheAbstract::factory('your backend');
 		$cache->start($stuff->getCacheKey()->setSub('render'));
 
 		$html = '<p>some html here</p>';
