@@ -82,7 +82,7 @@ class CacheMemcached extends CacheRAM {
 	 * @codeCoverageIgnore
 	 */
 	private function __construct() {
-		if (!class_exists('Memcached')) {
+		if (!extension_loaded('memcached')) {
 			$this->disable();
 			return;
 		}
@@ -108,7 +108,7 @@ class CacheMemcached extends CacheRAM {
 	 * @return boolean
 	 */
 	public function addServers($servers) {
-		if(!class_exists('Memcached')){
+		if (!extension_loaded('memcached')) {
 			return false;
 		}
 		return $this->memcached->addServers($servers);

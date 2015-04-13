@@ -7,6 +7,12 @@ use Cachearium\Backend\CacheMemcached;
 
 class CacheMemcachedTest extends PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		if (!extension_loaded('memcached')) {
+			$this->markTestSkipped('The Memcached extension is not available.');
+		}
+		// ob_start();
+	}
 
 	public function testNamespace() {
 		$cache = CacheMemcached::singleton();
