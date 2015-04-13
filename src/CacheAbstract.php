@@ -377,7 +377,7 @@ abstract class CacheAbstract {
 	public function startCallback(CacheKey $k, callable $c, array $cparams = [], $lifetime = null) {
 		$data = $this->start($k, $lifetime);
 		if (!$data) {
-			call_user_func_array($callback, $cparams);
+			call_user_func_array($c, $cparams);
 			$data = $this->end(false);
 		}
 		return $data;
