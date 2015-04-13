@@ -562,7 +562,15 @@ abstract class CacheAbstract {
 		}
 		// @codeCoverageIgnoreEnd
 
+		foreach ($this->loopdata as $l) {
+			/* @var $l CacheData */
+			if ($l->checkClash($k)) {
+				throw new Exceptions\CacheKeyClashException();
+			}
+		}
+
 		// check if we are inside another cache for automatic dependencies.
+		/* @var $cachedata CacheData */
 		$cachedata = null;
 		try {
 			$cachedata = $this->getData($k);
@@ -576,7 +584,7 @@ abstract class CacheAbstract {
 		catch (Exceptions\NotCachedException $e) {
 		}
 
-		/* @var $cachedata CacheData */
+		// found. just return it.
 		if ($cachedata) {
 			try {
 				$this->log(
@@ -628,13 +636,6 @@ abstract class CacheAbstract {
 
 			foreach ($this->loopdata as $l) {
 				/* @var $l CacheData */
-				if ($l == $cd) { // don't depend on itself
-					continue;
-				}
-
-				if ($l->checkClash($k)) {
-					throw new Exceptions\CacheKeyClashException();
-				}
 				$l->addDependency($k);
 			}
 			$this->loopdata[$this->inloop - 1]->appendData($data);
