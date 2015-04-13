@@ -2,5 +2,7 @@
 vendor/
 nbproject/
 .settings/
+.buildpath
 .project
 composer.lock
+/html/
