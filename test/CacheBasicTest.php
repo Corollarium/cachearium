@@ -173,6 +173,15 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 			$this->fail();
 		}
 
+		// ivalid
+		try {
+			$data2 = $cache->getDataP("some", "random", "stuff");
+			$this->fail();
+		}
+		catch (Cachearium\Exceptions\NotCachedException $e) {
+			$this->assertTrue(true);
+		}
+
 		sleep(1);
 
 		try {
