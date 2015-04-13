@@ -86,22 +86,26 @@ class CacheFilesystem extends CacheAbstract {
 		return parent::enable();
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::hashKey($k)
+	 */
 	protected function hashKey(CacheKey $k) {
 		$group = $this->namespace .  $k->base . $k->id;
 		return $group;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::increment($value, $k, $default)
+	 */
 	public function increment($value, CacheKey $k, $default = 0) {
 		throw new \Cachearium\Exceptions\CacheUnsupportedOperation();
 	}
 
 	/**
-	 * Get cached entry.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param string $sub If an item is cache in parts, this is used to specify the parts.
-	 * @return string or FALSE if nothing found.
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::get($k)
 	 */
 	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
@@ -131,13 +135,8 @@ class CacheFilesystem extends CacheAbstract {
 	}
 
 	/**
-	 * Saves cache information.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
-	 * @param any $data Data to save in cache
-	 * @return boolean true if no problem
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::store($data, $k, $lifetime)
 	 */
 	public function store($data, CacheKey $k, $lifetime = -1) {
 		// @codeCoverageIgnoreStart
@@ -159,12 +158,8 @@ class CacheFilesystem extends CacheAbstract {
 	}
 
 	/**
-	 * Deletes an entry from the cache
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
-	 * @return boolean
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::delete($k)
 	 */
 	public function delete(CacheKey $k) {
 		$group = $this->hashKey($k);
@@ -178,17 +173,18 @@ class CacheFilesystem extends CacheAbstract {
 		return $this->cache->remove($cacheid, $group);
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::setDefaultLifetime($lifetime)
+	 */
 	public function setDefaultLifetime($lifetime = 0) {
 		parent::setDefaultLifetime($lifetime);
 		$this->cache->setLifeTime($this->getDefaultLifetime());
 	}
 
 	/**
-	 * Cleans cache for a given type/id.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @return boolean true if no problem
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::cleanP($base, $id)
 	 */
 	public function cleanP($base, $id) {
 		// @codeCoverageIgnoreStart
@@ -203,6 +199,10 @@ class CacheFilesystem extends CacheAbstract {
 		return $retval;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::clear()
+	 */
 	public function clear() {
 		if ($this->cache) {
 			$this->cache->clean();
@@ -219,7 +219,11 @@ class CacheFilesystem extends CacheAbstract {
 		// nothing.
 	}
 
-	// @codeCoverageIgnoreStart
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::report()
+	 * @codeCoverageIgnore
+	 */
 	public function report() {
 		if ($this->should_log == false) {
 			return;
@@ -232,5 +236,4 @@ class CacheFilesystem extends CacheAbstract {
 		}
 		echo '</ul></div>';
 	}
-	// @codeCoverageIgnoreEnd
 }
