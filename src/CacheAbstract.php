@@ -183,7 +183,7 @@ abstract class CacheAbstract {
 	 * Get cached entry.
 	 *
 	 * @param $k
-	 * @return any
+	 * @return mixed
 	 * @throws Cachearium\Exceptions\NotCachedException
 	 */
 	abstract public function get(CacheKey $k);
@@ -193,8 +193,8 @@ abstract class CacheAbstract {
 	 *
 	 * @param string $base
 	 * @param string $id
-	 * @param any $sub
-	 * @return any
+	 * @param mixed $sub
+	 * @return mixed
 	 * @throws Cachearium\Exceptions\NotCachedException
 	 * @see getK
 	 */
@@ -224,7 +224,7 @@ abstract class CacheAbstract {
 	 * @see getData()
 	 * @param string $base
 	 * @param string $id
-	 * @param any $sub
+	 * @param mixed $sub
 	 */
 	public function getDataP($base, $id, $sub = null) {
 		return $this->getData(new CacheKey($base, $id, $sub));
@@ -236,10 +236,10 @@ abstract class CacheAbstract {
 	 * Backends may override this to provide an efficient implementation over multiple
 	 * calls to get().
 	 *
-	 * @param multitype:CacheKey $cacheid List of cache keys
+	 * @param array $cacheid List of cache keys
 	 * @param callable $callback if present will be called for any \NotCachedExceptions.
 	 * Callback should have this signature: (CacheAbstract $c, CacheKey $k)
-	 * @return multitype:any array with data, using same keys as cacheid. Keys not
+	 * @return array:mixed array with data, using same keys as cacheid. Keys not
 	 * found in cache won't be present, but no exception will be thrown
 	 */
 	public function getMulti(array $cacheid, $callback = null) {
@@ -281,7 +281,7 @@ abstract class CacheAbstract {
 	/**
 	 * Saves data in cache.
 	 *
-	 * @param any $data Data to save in cache
+	 * @param mixed $data Data to save in cache
 	 * @param CacheKey $k
 	 * @param integer $lifetime The lifetime in sceonds, although it is up to the implementation whether
 	 * it is respected or not.
@@ -292,7 +292,7 @@ abstract class CacheAbstract {
 	/**
 	 * Same as store() but expanded parameters
 	 *
-	 * @param any $data
+	 * @param mixed $data
 	 * @param string $base
 	 * @param string $sub
 	 * @param string $id
@@ -328,7 +328,7 @@ abstract class CacheAbstract {
 	 * @see delete()
 	 * @param string $base
 	 * @param string $id
-	 * @param any $sub
+	 * @param mixed $sub
 	 */
 	public function deleteP($base, $id, $sub = null) {
 		return $this->delete(new CacheKey($base, $id, $sub));
@@ -457,7 +457,7 @@ abstract class CacheAbstract {
 	 *
 	 * @param string $base
 	 * @param string $id
-	 * @param any $sub
+	 * @param mixed $sub
 	 */
 	abstract protected function hashKey(CacheKey $k);
 
