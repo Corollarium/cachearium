@@ -923,7 +923,8 @@ $(function() {
 			"top: " + bbox.top + "px;" +
 			"width: " + (bbox.right - bbox.left) + "px;" +
 			"height: " + (bbox.bottom - bbox.top) + "px;";
-		var debugel = $('<div class="cachearium-debug-view" style="' + style + '"></div>');
+		var debugel = $('<div class="cachearium-debug-view" style="' + style +
+			'" data-key="' + p.data('key') + '"></div>');
 		var innerdata = '<span class="cachearium-debug-view-innerdata">';
 		$.each(p.data(), function (name, value) {
 			debugel.attr("data-" + name, value);
