@@ -15,7 +15,6 @@ require_once(__DIR__ . '/Exceptions/NotCachedException.php');
 // CODE
 require_once(__DIR__ . '/CacheLogEnum.php');
 require_once(__DIR__ . '/CacheKey.php');
-require_once(__DIR__ . '/CacheException.php');
 require_once(__DIR__ . '/Cached.php');
 require_once(__DIR__ . '/CachedObject.php');
 require_once(__DIR__ . '/CacheData.php');
