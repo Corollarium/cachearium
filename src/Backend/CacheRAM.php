@@ -67,10 +67,8 @@ class CacheRAM extends CacheAbstract {
 	}
 
 	/**
-	 *
-	 * @param CacheKey $k
-	 * @return CacheData
-	 * @throws NotCachedException
+	 * (non-PHPdoc)
+	 * @see \Cachearium\CacheAbstract::getData($k)
 	 */
 	public function getData(CacheKey $k) {
 		$cd = CacheData::unserialize($this->get($k));

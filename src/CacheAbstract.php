@@ -14,10 +14,10 @@ abstract class CacheAbstract {
 	public static $debugOnPage = false;
 
 	/**
-	 * Controls debug on html page for all Cache backends.
-	 * @var boolean
+	 * Controls debug to a file
+	 * @var string the file name, or null if file debug is off.
 	 */
-	public static $debugLogToFile = false;
+	public static $debugLogFile = null;
 
 	/**
 	 * Is this cache enabled?
@@ -48,7 +48,7 @@ abstract class CacheAbstract {
 	 *
 	 * @var array
 	 */
-	static private $summary = array(
+	static protected $summary = array(
 		CacheLogEnum::ACCESSED   => 0,
 		CacheLogEnum::MISSED     => 0,
 		CacheLogEnum::DELETED    => 0,
@@ -57,6 +57,10 @@ abstract class CacheAbstract {
 		CacheLogEnum::PREFETCHED => 0,
 	);
 
+	/**
+	 * Stores cache log for debugging.
+	 * @var array
+	 */
 	protected $cache_log = array();
 
 	/**
@@ -72,7 +76,7 @@ abstract class CacheAbstract {
 	 * @return array()
 	 */
 	static public function getLogSummary() {
-		return self::$summary;
+		return static::$summary;
 	}
 
 	/**
@@ -160,11 +164,17 @@ abstract class CacheAbstract {
 		return $this->lifetime;
 	}
 
+	/**
+	 * @param string $name An optional namespace.
+	 */
 	public function setNamespace($name) {
 		$this->namespace = $name;
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getNamespace() {
 		return $this->namespace;
 	}
@@ -179,6 +189,7 @@ abstract class CacheAbstract {
 	abstract public function get(CacheKey $k);
 
 	/**
+	 * Same as get(), but expanded parameters.
 	 *
 	 * @param string $base
 	 * @param string $id
@@ -192,6 +203,8 @@ abstract class CacheAbstract {
 	}
 
 	/**
+	 * Same as get, but assumes data was stored with a CacheData object
+	 * and will treat it accordingly.
 	 *
 	 * @param CacheKey $k
 	 * @return CacheData
@@ -205,18 +218,29 @@ abstract class CacheAbstract {
 		throw new Exceptions\NotCachedException();
 	}
 
+	/**
+	 * Same as getData(), but expanded parameters.
+	 *
+	 * @see getData()
+	 * @param string $base
+	 * @param string $id
+	 * @param any $sub
+	 */
 	public function getDataP($base, $id, $sub = null) {
 		return $this->getData(new CacheKey($base, $id, $sub));
 	}
 
 	/**
-	 * Gets data from multiple cache keys
+	 * Gets data from multiple cache keys at once
 	 *
-	 * Backends may override this to provide an efficient implementation
+	 * Backends may override this to provide an efficient implementation over multiple
+	 * calls to get().
 	 *
-	 * @param multitype:CacheKey $cacheid
+	 * @param multitype:CacheKey $cacheid List of cache keys
+	 * @param callable $callback if present will be called for any \NotCachedExceptions.
+	 * Callback should have this signature: (CacheAbstract $c, CacheKey $k)
 	 * @return multitype:any array with data, using same keys as cacheid. Keys not
-	 * found in cache won't be present, but no exception will be generated
+	 * found in cache won't be present, but no exception will be thrown
 	 */
 	public function getMulti(array $cacheid, $callback = null) {
 		$retval = [];
@@ -241,6 +265,8 @@ abstract class CacheAbstract {
 	 *
 	 * @param integer $value
 	 * @param CacheKey $k
+	 * @param integer $default If key is not in cache, this value is returned.
+	 * @return integer
 	 */
 	abstract public function increment($value, CacheKey $k, $default = 0);
 
@@ -253,17 +279,19 @@ abstract class CacheAbstract {
 	}
 
 	/**
-	 * Saves cache information.
+	 * Saves data in cache.
 	 *
 	 * @param any $data Data to save in cache
 	 * @param CacheKey $k
-	 * @param integer $lifetime The lifetime, although it is up to the implementation whether
+	 * @param integer $lifetime The lifetime in sceonds, although it is up to the implementation whether
 	 * it is respected or not.
 	 * @return boolean true if no problem
 	 */
 	abstract public function store($data, CacheKey $k, $lifetime = 0);
 
 	/**
+	 * Same as store() but expanded parameters
+	 *
 	 * @param any $data
 	 * @param string $base
 	 * @param string $sub
@@ -277,6 +305,8 @@ abstract class CacheAbstract {
 	}
 
 	/**
+	 * Same as store() but expanded parameters
+	 *
 	 * @param CacheData $data
 	 * @param number $lifetime
 	 * @return boolean true if no problem
@@ -294,6 +324,12 @@ abstract class CacheAbstract {
 	 */
 	abstract public function delete(CacheKey $k);
 
+	/**
+	 * @see delete()
+	 * @param string $base
+	 * @param string $id
+	 * @param any $sub
+	 */
 	public function deleteP($base, $id, $sub = null) {
 		return $this->delete(new CacheKey($base, $id, $sub));
 	}
@@ -302,6 +338,7 @@ abstract class CacheAbstract {
 	 * Cleans cache: all entries with a certain $base and $id in the $key
 	 * are deleted.
 	 *
+	 * @param CacheKey $k
 	 * @return boolean true if no problem
 	 */
 	public function clean(CacheKey $k) {
@@ -324,8 +361,9 @@ abstract class CacheAbstract {
 	 * Prefetches data which will be used. This avoids multiple trips to the cache
 	 * server if they can be avoided.
 	 *
-	 * @param array $data array(0 => array('base', 'id', 'sub'), ...)
-	 * @return unknown_type
+	 * Backend may ignore this call and implement a noop.
+	 *
+	 * @param array $data array(0 => CacheKey, ...)
 	 */
 	abstract public function prefetch($data);
 
@@ -358,7 +396,7 @@ abstract class CacheAbstract {
 	public function recursiveStartP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
 		return $this->recursivestart(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
-	
+
 	/**
 	 * @see start()
 	 */
@@ -368,7 +406,7 @@ abstract class CacheAbstract {
 
 	/**
 	 * start() using a callable. Same as start()/c()/end().
-	 * 
+	 *
 	 * @param CacheKey $k
 	 * @param callable $c A callable. Whatever it prints will be cached.
 	 * @param array $cparams parameters for the callback, optional
@@ -516,7 +554,7 @@ abstract class CacheAbstract {
 		if ($print) {
 			$key = "cache-" . rand();
 			// @codeCoverageIgnoreStart
-			if (self::$debugOnPage) {
+			if (static::$debugOnPage) {
 				echo '<span class="debug-probe-begin"
 					data-key="' . $key .
 					'" data-base="' . $cachedata->base .
@@ -530,7 +568,7 @@ abstract class CacheAbstract {
 			echo $cachedata->stringify($this);
 
 			// @codeCoverageIgnoreStart
-			if (self::$debugOnPage) {
+			if (static::$debugOnPage) {
 				echo '<span class="debug-probe-end" data-key="' . $key . '"></span>';
 			}
 			// @codeCoverageIgnoreEnd
@@ -623,7 +661,7 @@ abstract class CacheAbstract {
 
 				if ($print) {
 					// @codeCoverageIgnoreStart
-					if (self::$debugOnPage) {
+					if (static::$debugOnPage) {
 						$this->printProbeStart($key, $cachedata, 'hit');
 					}
 					// @codeCoverageIgnoreEnd
@@ -631,7 +669,7 @@ abstract class CacheAbstract {
 					echo $retval;
 
 					// @codeCoverageIgnoreStart
-					if (self::$debugOnPage) {
+					if (static::$debugOnPage) {
 						$this->printProbeEnd($key, $cachedata);
 					}
 					// @codeCoverageIgnoreEnd
@@ -708,7 +746,7 @@ abstract class CacheAbstract {
 		if ($print) {
 			$key = "cache-" . rand();
 			// @codeCoverageIgnoreStart
-			if (self::$debugOnPage) {
+			if (static::$debugOnPage) {
 				$this->printProbeStart($key, $cachedata, 'save');
 			}
 			// @codeCoverageIgnoreEnd
@@ -716,7 +754,7 @@ abstract class CacheAbstract {
 			echo $cachedata->stringify($this);
 
 			// @codeCoverageIgnoreStart
-			if (self::$debugOnPage) {
+			if (static::$debugOnPage) {
 				$this->printProbeEnd($key, $cachedata);
 			}
 			// @codeCoverageIgnoreEnd
@@ -744,8 +782,8 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	static public function logHigh($message) {
-		if (self::$debugLogToFile) {
-			file_put_contents('/tmp/logcache', $message, FILE_APPEND);
+		if (static::$debugLogFile) {
+			file_put_contents(static::$debugLogFile, $message, FILE_APPEND);
 		}
 	}
 
@@ -757,7 +795,7 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	protected function log($status, CacheKey $k, $lifetime = 0) {
-		self::$summary[$status]++;
+		static::$summary[$status]++;
 
 		if ($this->should_log == false) {
 			return;
@@ -777,7 +815,7 @@ abstract class CacheAbstract {
 	 */
 	static public function dumpSummary() {
 		echo '<div id="cache-summary">Cache Summary (non-ajax): ';
-		foreach (self::getLogSummary() as $key => $val) {
+		foreach (static::getLogSummary() as $key => $val) {
 			echo $key . '=>' . $val . ' / ';
 		}
 		echo '</div>';
@@ -789,7 +827,7 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	static public function footerDebug() {
-		if (!self::$debugOnPage) {
+		if (!static::$debugOnPage) {
 			return;
 		}
 		?>

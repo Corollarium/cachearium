@@ -106,6 +106,7 @@ class CacheMemcached extends CacheRAM {
 	 * array('mem2.domain.com', 11211, 67)
 	 * );
 	 * @return boolean
+	 * @codeCoverageIgnore
 	 */
 	public function addServers($servers) {
 		if (!extension_loaded('memcached')) {
@@ -114,10 +115,20 @@ class CacheMemcached extends CacheRAM {
 		return $this->memcached->addServers($servers);
 	}
 
+	/**
+	 * Converts cachekey to a string for the data group.
+	 *
+	 * @param CacheKey $k
+	 * @return string
+	 */
 	private function getGroupString(CacheKey $k) {
 		return md5(strtr($this->namespace . $k->getBase() . $k->getId(), ' ', '_'));
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::hashKey()
+	 */
 	protected function hashKey(CacheKey $k) {
 		$group = $this->getGroupString($k);
 		$ns_key = $this->memcached->get($group);
@@ -141,12 +152,8 @@ class CacheMemcached extends CacheRAM {
 	}
 
 	/**
-	 * Get cached entry.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., "Thing")
-	 * @param string $id Item id ("18383")
-	 * @param string $sub If an item is cache in parts, this is used to specify the part
-	 * @return string or FALSE if nothing found.
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::get()
 	 */
 	public function get(CacheKey $k) {
 		// @codeCoverageIgnoreStart
@@ -191,6 +198,10 @@ class CacheMemcached extends CacheRAM {
 		return $x;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::increment()
+	 */
 	public function increment($value, CacheKey $k, $default = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
@@ -211,13 +222,8 @@ class CacheMemcached extends CacheRAM {
 	}
 
 	/**
-	 * Saves cache information.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
-	 * @param string $data Data to save in cache
-	 * @return boolean true if no problem
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::store()
 	 */
 	public function store($data, CacheKey $k, $lifetime = 0) {
 		// @codeCoverageIgnoreStart
@@ -239,12 +245,8 @@ class CacheMemcached extends CacheRAM {
 	}
 
 	/**
-	 * Deletes an entry from the cache
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param array $sub If an item is cache in parts, this is used to specify the parts.
-	 * @return unknown_type
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::delete()
 	 */
 	public function delete(CacheKey $k) {
 		// @codeCoverageIgnoreStart
@@ -262,11 +264,8 @@ class CacheMemcached extends CacheRAM {
 	}
 
 	/**
-	 * Cleans cache for a given type/id.
-	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @return boolean true if no problem
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::cleanP()
 	 */
 	public function cleanP($base, $id) {
 		// @codeCoverageIgnoreStart
@@ -281,6 +280,10 @@ class CacheMemcached extends CacheRAM {
 		return $this->memcached->increment($group);
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::clear()
+	 */
 	public function clear() {
 		if ($this->memcached) {
 			$this->memcached->flush();
@@ -295,6 +298,10 @@ class CacheMemcached extends CacheRAM {
 		}
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::prefetch()
+	 */
 	public function prefetch($data) {
 		$keys = array();
 
@@ -315,6 +322,8 @@ class CacheMemcached extends CacheRAM {
 	}
 
 	/**
+	 * (non-PHPdoc)
+	 * @see \Cachearium\Backend\CacheRAM::report()
 	 * @codeCoverageIgnore
 	 */
 	public function report() {
