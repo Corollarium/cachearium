@@ -414,7 +414,7 @@ abstract class CacheAbstract {
 	 */
 	public function startCallback(CacheKey $k, callable $c, array $cparams = [], $lifetime = null) {
 		$data = $this->start($k, $lifetime);
-		if (!$data) {
+		if ($data === false) {
 			call_user_func_array($c, $cparams);
 			$data = $this->end(false);
 		}
@@ -540,7 +540,7 @@ abstract class CacheAbstract {
 		$cachedata = $this->loopdata[$this->inloop];
 		$cachedata->appendData($data);
 
-		$mainkey = $cachedata->generateDependenciesHash($this);
+		$cachedata->generateDependenciesHash($this);
 		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
 		$this->store($cachedata, 'cacherecursive', 0, $mainkey);
 		$this->storeData($cachedata);
@@ -557,9 +557,9 @@ abstract class CacheAbstract {
 			if (static::$debugOnPage) {
 				echo '<span class="debug-probe-begin"
 					data-key="' . $key .
-					'" data-base="' . $cachedata->base .
-					'" data-id="' . $cachedata->id .
-					'" data-sub="' . print_r($cachedata->sub, true) .
+					'" data-base="' . $cachedata->getKey()->base .
+					'" data-id="' . $cachedata->getKey()->id .
+					'" data-sub="' . print_r($cachedata->getKey()->sub, true) .
 					'" data-lifetime="' . $cachedata->lifetime .
 					'" data-type="save"></span>';
 			}
@@ -586,12 +586,12 @@ abstract class CacheAbstract {
 	 * @param string $type
 	 * @codeCoverageIgnore
 	 */
-	protected function printProbeStart($key, $cachedata, $type) {
+	protected function printProbeStart($key, CacheData $cachedata, $type) {
 		echo '<span class="debug-probe-begin"
 			data-key="' . $key .
-			'" data-base="' . $cachedata->base .
-			'" data-id="' . $cachedata->id .
-			'" data-sub="' . print_r($cachedata->sub, true) .
+			'" data-base="' . $cachedata->getKey()->base .
+			'" data-id="' . $cachedata->getKey()->id .
+			'" data-sub="' . print_r($cachedata->getKey()->sub, true) .
 			'" data-lifetime="' . $cachedata->lifetime .
 			'" data-type="' . $type . '"></span>';
 	}
@@ -604,7 +604,7 @@ abstract class CacheAbstract {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 * @codeCoverageIgnore
 	 */
-	protected function printProbeEnd($key, $cachedata) {
+	protected function printProbeEnd($key, CacheData $cachedata) {
 		echo '<span class="debug-probe-end" data-key="' . $key . '"></span>';
 	}
 
@@ -731,7 +731,7 @@ abstract class CacheAbstract {
 		$cachedata = $this->loopdata[$this->inloop];
 		$cachedata->appendData($data);
 
-		$mainkey = $cachedata->generateDependenciesHash($this);
+		$cachedata->generateDependenciesHash($this);
 		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
 		$this->storeP($cachedata, 'cacherecursive', 0, $mainkey);
 		$this->storeData($cachedata);
