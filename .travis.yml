@@ -13,3 +13,6 @@ script:
   - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 sudo: false
+
+services:
+  - memcached
