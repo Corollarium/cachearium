@@ -1,4 +1,8 @@
 [![Build Status](https://travis-ci.org/Corollarium/cachearium.svg)](https://travis-ci.org/Corollarium/cachearium)
+[![Code Coverage](https://scrutinizer-ci.com/g/Corollarium/cachearium/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Corollarium/cachearium/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/corollarium/cachearium/v/stable.svg)](https://packagist.org/packages/corollarium/cachearium)
+[![Latest Unstable Version](https://poser.pugx.org/corollarium/cachearium/v/unstable.svg)](https://packagist.org/packages/corollarium/cachearium)
+[![License](https://poser.pugx.org/corollarium/cachearium/license.svg)](https://packagist.org/packages/corollarium/cachearium)
 
 # Cachearium
 
