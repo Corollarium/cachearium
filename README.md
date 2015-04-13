@@ -44,7 +44,7 @@ $cache->storeData(new CacheData($data, new CacheKey('Namespace', 'Subname')));
 // get it later
 try { 
 	$data2 = $cache->getData(new CacheKey('Namespace', 'Subname'));
-	// $data2->getgetFirstData() == 'xxxxx'
+	// $data2->getFirstData() == 'xxxxx'
 }
 catch (NotCachedException($e)) {
 	// handle not cached
