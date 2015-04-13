@@ -181,7 +181,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 
 		ob_start();
 		ob_implicit_flush(false);
-		$this->assertTrue($cache->recursiveStartP($base, 1));
+		$this->assertTrue(($cache->recursiveStartP($base, 1) !== false));
 		$data = ob_get_contents();
 		ob_end_clean();
 

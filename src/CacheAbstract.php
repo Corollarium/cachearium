@@ -553,7 +553,7 @@ abstract class CacheAbstract {
 	 * @param boolean $fail if true throws a NotCachedException if not cached.
 	 * @throws Cachearium\Exceptions\NotCachedException
 	 * @throws Cachearium\Exceptions\CacheKeyClashException
-	 * @return boolean
+	 * @return string The cached item as a string or false if not cached.
 	 */
 	public function recursivestart(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		// @codeCoverageIgnoreStart
@@ -603,7 +603,7 @@ abstract class CacheAbstract {
 					}
 					// @codeCoverageIgnoreEnd
 				}
-				return true;
+				return $retval;
 			}
 			catch (Exceptions\NotCachedException $e) {
 				$this->delete($k); // clear recursively
