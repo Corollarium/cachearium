@@ -207,7 +207,7 @@ abstract class CacheAbstract {
 			try {
 				$retval[$k] = $this->get($c);
 			}
-			catch (NotCachedException $e) {
+			catch (Exceptions\NotCachedException $e) {
 				// if there is a callback, call it
 				if ($callback) {
 					$retval[$k] = call_user_func($callback, $this, $c);
@@ -434,7 +434,7 @@ abstract class CacheAbstract {
 		// fetch cache
 		try {
 
-		} catch (NotCachedException $e) {
+		} catch (Exceptions\NotCachedException $e) {
 			// not cached
 			if ($fail) {
 				throw $e;
@@ -573,7 +573,7 @@ abstract class CacheAbstract {
 			}
 			// TODO $this->prefetch($cachedata->getDependencies());
 		}
-		catch (NotCachedException $e) {
+		catch (Exceptions\NotCachedException $e) {
 		}
 
 		/* @var $cachedata CacheData */
@@ -605,7 +605,7 @@ abstract class CacheAbstract {
 				}
 				return $retval;
 			}
-			catch (NotCachedException $e) {
+			catch (Exceptions\NotCachedException $e) {
 				$this->delete($k); // clear recursively
 				if ($this->inloop) {
 					throw $e;
@@ -666,7 +666,7 @@ abstract class CacheAbstract {
 
 		$mainkey = $cachedata->generateDependenciesHash($this);
 		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
-		$this->store($cachedata, 'cacherecursive', 0, $mainkey);
+		$this->storeP($cachedata, 'cacherecursive', 0, $mainkey);
 		$this->storeData($cachedata);
 
 		// if recursive
