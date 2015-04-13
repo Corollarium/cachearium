@@ -19,7 +19,7 @@ class CacheNull extends CacheAbstract {
 	 *
 	 * @return Cache The cache singleton.
 	 */
-	static public function singleton() {
+	public static function singleton() {
 		static $instances;
 
 		if (!isset($instances)) {

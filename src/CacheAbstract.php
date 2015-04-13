@@ -320,7 +320,7 @@ abstract class CacheAbstract {
 	 * Deletes an entry from the cache
 	 *
 	 * @param CacheKey $k
-	 * @return unknown_type
+	 * @return boolean
 	 */
 	abstract public function delete(CacheKey $k);
 
