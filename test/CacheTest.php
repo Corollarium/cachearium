@@ -186,7 +186,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		ob_end_clean();
 
 		$this->assertEquals('start!', $data);
-		$cache->clean($base, 1);
+		$cache->cleanP($base, 1);
 	}
 
 	public function testStartEndRAM() {

@@ -603,7 +603,7 @@ abstract class CacheAbstract {
 					}
 					// @codeCoverageIgnoreEnd
 				}
-				return $retval;
+				return true;
 			}
 			catch (Exceptions\NotCachedException $e) {
 				$this->delete($k); // clear recursively
