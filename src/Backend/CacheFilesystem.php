@@ -15,7 +15,7 @@ require_once(__DIR__ . '/external/Timed.php');
 class CacheFilesystem extends CacheAbstract {
 	/**
 	 *
-	 * @var Cache_Lite_Timed
+	 * @var \Cache_Lite_Timed
 	 */
 	private $cache;
 

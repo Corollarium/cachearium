@@ -26,4 +26,39 @@ class CacheLogEnum {
 			self::PREFETCHED => '<span class="cache-prefetched">Prefetched</span>'
 		);
 	}
+
+	/**
+	 * Returns an array with all enum values.
+	 * @return array
+	 * @codeCoverageIgnore
+	 */
+	static public function getAll() {
+		return array_keys(static::getNames());
+	}
+
+	/**
+	 * Checks if a value is a valid grant
+	 *
+	 * @param string $value
+	 * @return boolean true if valid
+	 * @codeCoverageIgnore
+	 */
+	static public function valid($value) {
+		return array_key_exists($value, static::getNames());
+	}
+
+	/**
+	 * Given a name, returns its value or a string saying it is invalid.
+	 *
+	 * @param string $value
+	 * @return string
+	 * @codeCoverageIgnore
+	 */
+	static public function getName($value) {
+		if (static::valid($value)) {
+			$x = static::getNames();
+			return $x[$value];
+		}
+		return 'Invalid: ' . htmlspecialchars($value);
+	}
 }
