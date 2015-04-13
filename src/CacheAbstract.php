@@ -587,7 +587,7 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	protected function printProbeStart($key, CacheData $cachedata, $type) {
-		echo '<span class="debug-probe-begin"
+		echo '<span class="cachearium-debug-probe-begin"
 			data-key="' . $key .
 			'" data-base="' . $cachedata->getKey()->base .
 			'" data-id="' . $cachedata->getKey()->id .
@@ -605,7 +605,7 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	protected function printProbeEnd($key, CacheData $cachedata) {
-		echo '<span class="debug-probe-end" data-key="' . $key . '"></span>';
+		echo '<span class="cachearium-debug-probe-end" data-key="' . $key . '"></span>';
 	}
 
 	/**
@@ -826,44 +826,47 @@ abstract class CacheAbstract {
 	 */
 	public static function cssDebug() {
 ?>
-[class^="debug-probe"] {
+[class^="cachearium-debug-probe"] {
 	width: 10px;
 	height: 10px;
 	background-color: #f00;
 	display: inline;
 	/*visibility: hidden; */
 }
-.debug-overview {
+.cachearium-debug-overview {
 	position: absolute;
-	pointer-events: none;
-	right: 0;
+	left: 0;
 	top: 0;
+	background-color: rgba(255, 255, 255, 1);
+	border: 1px solid grey;
+	z-index: 5000;
 }
-.debug-view {
+.cachearium-debug-view {
 	position: absolute;
 	pointer-events: none;
 	border: 1px solid black;
 }
 
-.debug-view[data-type="hit"] {
-	background-color: rgba(0, 255, 0, 0.2);
+.cachearium-debug-view[data-type="hit"] {
+	background-color: rgba(0, 255, 0, 0.1);
 }
-.debug-view[data-type="save"] {
-	background-color: rgba(255, 0, 0, 0.2);
+.cachearium-debug-view[data-type="save"] {
+	background-color: rgba(255, 0, 0, 0.1);
 }
-.debug-view .debug-view-innerdata {
+.cachearium-debug-view .cachearium-debug-view-innerdata {
 	float: right;
 	color: #000;
 	height: 10px;
 	width: 10px;
+	border: 1px solid grey;
 	pointer-events: auto;
 	overflow: hidden;
 	background-color: rgba(255, 0, 0, 0.7);
 }
-.debug-view	.debug-view-innerdata:hover {
+.cachearium-debug-view	.cachearium-debug-view-innerdata:hover {
 	width: auto;
 	height: auto;
-	background-color: rgba(255, 255, 255, 0.7);
+	background-color: rgba(255, 255, 255, 0.9);
 	border: 1px solid grey;
 }
 <?php
@@ -882,14 +885,15 @@ abstract class CacheAbstract {
 		?>
 <script>
 $(function() {
-	var probes = $('.debug-probe-begin');
-	if (probes.length != $('.debug-probe-end').length) {
+	var probes = $('.cachearium-debug-probe-begin');
+	if (probes.length != $('.cachearium-debug-probe-end').length) {
 		alert('Woooooooh! Cache starts do not match cache ends!');
 	}
 
+	var probePosition = function() {
 	for (var i = 0; i < probes.length; i++) {
 		var p = $(probes[i]);
-		var end = $('.debug-probe-end[data-key="' + p.data('key') + '"]');
+		var end = $('.cachearium-debug-probe-end[data-key="' + p.data('key') + '"]');
 		var between = p.nextUntil(end);
 		var bbox = {'top': 100000, 'left': 10000000, 'bottom': 0, 'right': 0 };
 
@@ -919,8 +923,8 @@ $(function() {
 			"top: " + bbox.top + "px;" +
 			"width: " + (bbox.right - bbox.left) + "px;" +
 			"height: " + (bbox.bottom - bbox.top) + "px;";
-		var debugel = $('<div class="debug-view" style="' + style + '"></div>');
-		var innerdata = '<span class="debug-view-innerdata">';
+		var debugel = $('<div class="cachearium-debug-view" style="' + style + '"></div>');
+		var innerdata = '<span class="cachearium-debug-view-innerdata">';
 		$.each(p.data(), function (name, value) {
 			debugel.attr("data-" + name, value);
 			innerdata += name + ": " + value + "<br/>";
@@ -929,7 +933,16 @@ $(function() {
 		debugel.append(innerdata);
 		$('body').append(debugel);
 	}
-	$('body').append('<div class="debug-overview">' + probes.length + ' probes</div>');
+	$('body').append(
+		'<div class="cachearium-debug-overview">' +
+			'<span><b>Cachearium</b></span><br/>' +
+			'<span>' + probes.length + ' probes</span><br/>' +
+			'<a id="cachearium-debug-toggle" href="#">Toggle</a>' +
+		'</div>'
+	);
+	$('#cachearium-debug-toggle').click(function() {
+		$('.cachearium-debug-view').toggle();
+	});
 });
 </script>
 <?php
