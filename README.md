@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Corollarium/cachearium.svg)](https://travis-ci.org/Corollarium/cachearium)
+
 # Cachearium
 
 Cache in your PHP applications. Fast, simple and with easy invalidation.
@@ -235,7 +237,8 @@ same except for a small part that varies for each user.
 
 ## Null
 
-Does nothing. You can use it to turn off your caching for tests.
+Does nothing. You can use it to turn off your caches for tests without changing
+any code calls.
 
 ## RAM
 
@@ -247,6 +250,6 @@ should not persist between requests.
 Uses Memcache as a backend, and stores data in RAM temporarily to avoid repeated
 requests in the same run.
 
-## Filyesystem
+## Filesystem
 
 Stores in the filesystem.
