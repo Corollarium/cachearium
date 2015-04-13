@@ -8,7 +8,7 @@ use Cachearium\Backend\CacheMemcached;
 use Cachearium\Backend\CacheRAM;
 use Cachearium\Backend\CacheFilesystem;
 
-class CacheBasicTest extends PHPUnit_Framework_TestCase {
+class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
 	static public function setUpBeforeClass() {
