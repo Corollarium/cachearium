@@ -92,7 +92,9 @@ class CacheMemcached extends CacheRAM {
 			return;
 		}
 
-		// TODO $this->memcache->setOption(\Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
+		if (\Memcached::HAVE_IGBINARY) {
+			$this->memcache->setOption(\Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
+		}
 		$this->memcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
 		$this->lifetime = 3600;
 	}
