@@ -635,6 +635,9 @@ abstract class CacheAbstract {
 			ob_clean();
 
 			foreach ($this->loopdata as $l) {
+				if ($l == $cd) { // don't depend on itself
+					continue;
+				}
 				/* @var $l CacheData */
 				$l->addDependency($k);
 			}
@@ -671,6 +674,7 @@ abstract class CacheAbstract {
 		$this->storeData($cachedata);
 
 		// if recursive
+		unset($this->loopdata[$this->inloop]);
 		$this->inloop--;
 		if ($this->inloop > 0) {
 			return false;
