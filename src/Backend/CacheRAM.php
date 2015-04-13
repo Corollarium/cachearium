@@ -83,7 +83,7 @@ class CacheRAM extends CacheAbstract {
 	public function increment($value, CacheKey $k, $default = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
-			return false;
+			return $default;
 		}
 		// @codeCoverageIgnoreEnd
 
