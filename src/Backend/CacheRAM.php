@@ -26,7 +26,7 @@ class CacheRAM extends CacheAbstract {
 	/**
 	 * Cache constructor (this is a singleton).
 	 *
-	 * @return Cache The cache singleton.
+	 * @return CacheRAM The cache singleton.
 	 *
 	 */
 	static public function singleton() {

@@ -66,7 +66,7 @@ class CacheData {
 	 * @param unknown $callback
 	 * @return CacheData
 	 */
-	public function appendCallback($callback) {
+	public function appendCallback(callable $callback) {
 		$this->data[] = array('type' => CACHEDATA_TYPE_CALLBACK, 'data' => $callback);
 		return $this;
 	}
@@ -180,7 +180,7 @@ class CacheData {
 
 	public function appendRecursionData(CacheData $d) {
 		if (!$d->getKey()) {
-			throw new CacheInvalidDataException();
+			throw new Exceptions\CacheInvalidDataException();
 		}
 		$this->addDependency($d->getKey());
 		$this->data[] = array(
@@ -254,7 +254,7 @@ class CacheData {
 	 * Converts this data to a string that can output. This is not a hash
 	 * key or a serialization, but an actual render for humans.
 	 *
-	 * @throws NotCachedException
+	 * @throws Exceptions\NotCachedException
 	 */
 	public function stringify(CacheAbstract $c, $recurse = true) {
 		$retval = [];
@@ -262,7 +262,10 @@ class CacheData {
 			if ($item['type'] == CACHEDATA_TYPE_CALLBACK) {
 				$callback = $item['data'];
 				if (is_callable($callback)) {
-					$retval[] = $callback();
+					$retval[] = call_user_func($callback);
+				}
+				else {
+					// throw?
 				}
 			}
 			else if ($item['type'] == CACHEDATA_TYPE_RECURSION) {
@@ -280,6 +283,7 @@ class CacheData {
 				$retval[] = $item['data'];
 			}
 		}
+
 		return implode('', $retval);
 	}
 
