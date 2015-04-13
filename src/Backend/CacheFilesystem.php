@@ -19,8 +19,6 @@ class CacheFilesystem extends CacheAbstract {
 	 */
 	private $cache;
 
-	private $namespace = "none";
-
 	private $path = '/tmp/';
 
 	// @codeCoverageIgnoreStart

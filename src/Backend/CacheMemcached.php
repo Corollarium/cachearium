@@ -26,14 +26,6 @@ class CacheMemcached extends CacheRAM {
 	private $fetches = 0; /// number of times we had to hit memcache directly
 
 	/**
-	 * This is a namespace string to avoid clashes with other instances of this application.
-	 * Initialize it to a unique string. If you are not running multiple instances, ignore.
-	 *
-	 * @var string
-	 */
-	private $namespace = "none";
-
-	/**
 	 * Cache constructor (this is a singleton).
 	 *
 	 * @param $serves optional. If present, addServers() is called with this parameter
@@ -83,11 +75,6 @@ class CacheMemcached extends CacheRAM {
 		}
 
 		return $this->fetches;
-	}
-
-	public function setNamespace($name) {
-		$this->namespace = $name;
-		return $this;
 	}
 
 	/**

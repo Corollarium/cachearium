@@ -36,6 +36,14 @@ abstract class CacheAbstract {
 	protected $lifetime = 0;
 
 	/**
+	 * This is a namespace string to avoid clashes with other instances of this application.
+	 * Initialize it to a unique string. If you are not running multiple instances, ignore.
+	 *
+	 * @var string
+	 */
+	protected $namespace = "";
+
+	/**
 	 * Array for basic cache profiling. Keys are CacheLogEnum, values are counters.
 	 *
 	 * @var array
@@ -150,6 +158,15 @@ abstract class CacheAbstract {
 
 	public function getDefaultLifetime() {
 		return $this->lifetime;
+	}
+
+	public function setNamespace($name) {
+		$this->namespace = $name;
+		return $this;
+	}
+
+	public function getNamespace() {
+		return $this->namespace;
 	}
 
 	/**

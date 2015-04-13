@@ -52,7 +52,7 @@ class CacheRAM extends CacheAbstract {
 	}
 
 	protected function hashKey(CacheKey $k) {
-		return $k->base . $k->id . serialize($k->sub);
+		return $this->namespace . $k->base . $k->id . serialize($k->sub);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class CacheRAM extends CacheAbstract {
 		}
 		$this->checkValidArgs($k);
 
-		$idx = $k->base . $k->id;
+		$idx = $this->namespace . $k->base . $k->id;
 		if (isset($this->storage[$idx]) && isset($this->storage[$idx][$sub])) {
 			$this->storage[$idx][$sub] += $value;
 		}
@@ -122,7 +122,7 @@ class CacheRAM extends CacheAbstract {
 		}
 		$this->checkValidArgs($k);
 
-		$idx = $k->base . $k->id;
+		$idx = $this->namespace . $k->base . $k->id;
 		if (isset($this->storage[$idx])
 			and array_key_exists($sub, $this->storage[$idx])
 		) {
@@ -148,7 +148,7 @@ class CacheRAM extends CacheAbstract {
 		}
 		$this->checkValidArgs($k);
 
-		$this->storage[$k->base . $k->id][$sub] = $data;
+		$this->storage[$this->namespace . $k->base . $k->id][$sub] = $data;
 		return true;
 	}
 
@@ -162,12 +162,12 @@ class CacheRAM extends CacheAbstract {
 
 		$this->checkValidArgs($k);
 
-		unset($this->storage[$k->base . $k->id][$sub]);
+		unset($this->storage[$this->namespace . $k->base . $k->id][$sub]);
 		return true;
 	}
 
 	public function cleanP($base, $id) {
-		unset($this->storage[$base . $id]);
+		unset($this->storage[$this->namespace . $base . $id]);
 		return true;
 	}
 
