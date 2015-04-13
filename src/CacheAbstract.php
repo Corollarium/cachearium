@@ -75,7 +75,7 @@ abstract class CacheAbstract {
 	 *
 	 * @return array()
 	 */
-	static public function getLogSummary() {
+	public static function getLogSummary() {
 		return static::$summary;
 	}
 
@@ -86,7 +86,7 @@ abstract class CacheAbstract {
 	 * @throws Cachearium\Exceptions\CacheInvalidBackendException
 	 * @return CacheAbstract
 	 */
-	static public function factory($backend) {
+	public static function factory($backend) {
 		$classname = '\Cachearium\Backend\Cache' . $backend;
 		if (!class_exists($classname)) {
 			throw new Exceptions\CacheInvalidBackendException("Class does not exist");
@@ -98,7 +98,7 @@ abstract class CacheAbstract {
 	 * Clears all cache classes.
 	 * @codeCoverageIgnore
 	 */
-	static public function clearAll() {
+	public static function clearAll() {
 		// TODO: should only clear the ones that were instantiated?
 		foreach (get_declared_classes() as $classname) {
 			if (is_subclass_of($classname, 'CacheAbstract')) {
@@ -781,7 +781,7 @@ abstract class CacheAbstract {
 	 *
 	 * @codeCoverageIgnore
 	 */
-	static public function logHigh($message) {
+	public static function logHigh($message) {
 		if (static::$debugLogFile) {
 			file_put_contents(static::$debugLogFile, $message, FILE_APPEND);
 		}
@@ -813,7 +813,7 @@ abstract class CacheAbstract {
 	 * Dumps a short HTML summary of the cache hits/misses
 	 * @codeCoverageIgnore
 	 */
-	static public function dumpSummary() {
+	public static function dumpSummary() {
 		echo '<div id="cache-summary">Cache Summary (non-ajax): ';
 		foreach (static::getLogSummary() as $key => $val) {
 			echo $key . '=>' . $val . ' / ';
@@ -822,11 +822,60 @@ abstract class CacheAbstract {
 	}
 
 	/**
+	 * Renders CSS for live view debugging of cached data.
+	 */
+	public static function cssDebug() {
+?>
+[class^="debug-probe"] {
+	width: 10px;
+	height: 10px;
+	background-color: #f00;
+	display: inline;
+	/*visibility: hidden; */
+}
+.debug-overview {
+	position: absolute;
+	pointer-events: none;
+	right: 0;
+	top: 0;
+}
+.debug-view {
+	position: absolute;
+	pointer-events: none;
+	border: 1px solid black;
+}
+
+.debug-view[data-type="hit"] {
+	background-color: rgba(0, 255, 0, 0.2);
+}
+.debug-view[data-type="save"] {
+	background-color: rgba(255, 0, 0, 0.2);
+}
+.debug-view .debug-view-innerdata {
+	float: right;
+	color: #000;
+	height: 10px;
+	width: 10px;
+	pointer-events: auto;
+	overflow: hidden;
+	background-color: rgba(255, 0, 0, 0.7);
+}
+.debug-view	.debug-view-innerdata:hover {
+	width: auto;
+	height: auto;
+	background-color: rgba(255, 255, 255, 0.7);
+	border: 1px solid grey;
+}
+<?php
+	}
+
+
+	/**
 	 * Extensive footer debug code. Shows which parts of the HTML were
 	 * cached or missed visually. Great!
 	 * @codeCoverageIgnore
 	 */
-	static public function footerDebug() {
+	public static function footerDebug() {
 		if (!static::$debugOnPage) {
 			return;
 		}
