@@ -349,13 +349,19 @@ abstract class CacheAbstract {
 	public function start(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		$this->extraSub($k->sub);
 
-		return $this->recursivestart($k, $lifetime, $print, $fail);
+		return $this->recursiveStart($k, $lifetime, $print, $fail);
 	}
 
+	/**
+	 * @see recursiveStart()
+	 */
 	public function recursiveStartP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
 		return $this->recursivestart(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
-
+	
+	/**
+	 * @see start()
+	 */
 	public function startP($base, $id, $sub = null, $lifetime = null, $print = true, $fail = false) {
 		return $this->start(new CacheKey($base, $id, $sub), $lifetime, $print, $fail);
 	}
@@ -574,7 +580,7 @@ abstract class CacheAbstract {
 	 * @throws Cachearium\Exceptions\CacheKeyClashException
 	 * @return string The cached item as a string or false if not cached.
 	 */
-	public function recursivestart(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
+	public function recursiveStart(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
 			return false;
