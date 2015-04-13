@@ -496,7 +496,7 @@ abstract class CacheAbstract {
 
 		// fetch cache
 		try {
-
+			$cachedata = $this->getData($k);
 		} catch (Exceptions\NotCachedException $e) {
 			// not cached
 			if ($fail) {
