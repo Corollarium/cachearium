@@ -157,7 +157,7 @@ abstract class CacheAbstract {
 	 *
 	 * @param $k
 	 * @return any
-	 * @throws NotCachedException
+	 * @throws Cachearium\Exceptions\NotCachedException
 	 */
 	abstract public function get(CacheKey $k);
 
@@ -167,7 +167,7 @@ abstract class CacheAbstract {
 	 * @param string $id
 	 * @param any $sub
 	 * @return any
-	 * @throws NotCachedException
+	 * @throws Cachearium\Exceptions\NotCachedException
 	 * @see getK
 	 */
 	public function getP($base, $id, $sub = null) {
@@ -178,14 +178,14 @@ abstract class CacheAbstract {
 	 *
 	 * @param CacheKey $k
 	 * @return CacheData
-	 * @throws NotCachedException
+	 * @throws Cachearium\Exceptions\NotCachedException
 	 */
 	public function getData(CacheKey $k) {
 		$cd = CacheData::unserialize($this->get($k));
 		if ($cd->checkUpdateToDate($this)) {
 			return $cd;
 		}
-		throw new NotCachedException();
+		throw new Exceptions\NotCachedException();
 	}
 
 	public function getDataP($base, $id, $sub = null) {
@@ -551,8 +551,8 @@ abstract class CacheAbstract {
 	 * @param integer $lifetime if null uses the class default
 	 * @param boolean $print
 	 * @param boolean $fail if true throws a NotCachedException if not cached.
-	 * @throws NotCachedException
-	 * @throws CacheKeyClashException
+	 * @throws Cachearium\Exceptions\NotCachedException
+	 * @throws Cachearium\Exceptions\CacheKeyClashException
 	 * @return boolean
 	 */
 	public function recursivestart(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
@@ -613,7 +613,7 @@ abstract class CacheAbstract {
 			}
 		}
 		if ($fail) {
-			throw new NotCachedException();
+			throw new Exceptions\NotCachedException();
 		}
 
 		$this->inloop++;
@@ -633,7 +633,7 @@ abstract class CacheAbstract {
 				}
 
 				if ($l->checkClash($k)) {
-					throw new CacheKeyClashException();
+					throw new Exceptions\CacheKeyClashException();
 				}
 				$l->addDependency($k);
 			}
