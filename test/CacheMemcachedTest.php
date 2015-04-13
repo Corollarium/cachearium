@@ -11,6 +11,7 @@ class CacheMemcachedTest extends PHPUnit_Framework_TestCase {
 	public function testNamespace() {
 		$cache = CacheMemcached::singleton();
 		$this->assertEquals($cache, $cache->setNamespace("testmem"));
+		$this->assertEquals("testmem", $cache->getNamespace());
 
 		$key = new CacheKey('namespace', 1);
 		$cache->store(333, $key);
