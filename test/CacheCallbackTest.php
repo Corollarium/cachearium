@@ -64,19 +64,24 @@ class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testCacheError() {
+		$cache = CacheRAM::singleton();
+		$this->assertFalse($cache->appendCallback('callbackTesterStart'));
+	}
+
 	protected function _startcallback(CacheAbstract $cache) {
 		$key = new CacheKey("startcallback", 1);
 
 		$this->assertFalse($cache->start($key));
 		echo "something ";
-		$cache->appendCallback('callbackTesterStart');
+		$this->assertTrue($cache->appendCallback('callbackTesterStart'));
 		echo " otherthing";
 		$output = $cache->end(false);
 
 		$this->assertContains(CALLBACKVALUE, $output);
 
 		// run again, we should have another value
-		$second = $cache->start($key);
+		$second = $cache->start($key, null, false);
 		$this->assertNotFalse($second);
 		$this->assertContains(CALLBACKVALUE, $second);
 		$this->assertNotEquals($second, $output);
