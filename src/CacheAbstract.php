@@ -823,6 +823,7 @@ abstract class CacheAbstract {
 
 	/**
 	 * Renders CSS for live view debugging of cached data.
+	 * @codeCoverageIgnore
 	 */
 	public static function cssDebug() {
 ?>
@@ -890,7 +891,6 @@ $(function() {
 		alert('Woooooooh! Cache starts do not match cache ends!');
 	}
 
-	var probePosition = function() {
 	for (var i = 0; i < probes.length; i++) {
 		var p = $(probes[i]);
 		var end = $('.cachearium-debug-probe-end[data-key="' + p.data('key') + '"]');
