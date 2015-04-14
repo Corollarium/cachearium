@@ -71,6 +71,7 @@ class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 
 	protected function _startcallback(CacheAbstract $cache) {
 		$key = new CacheKey("startcallback", 1);
+		$cache->clean($key);
 
 		$this->assertFalse($cache->start($key));
 		echo "something ";
