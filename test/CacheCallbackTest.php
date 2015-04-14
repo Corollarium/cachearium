@@ -14,6 +14,10 @@ function callbackTester() {
 	echo CALLBACKVALUE;
 }
 
+function callbackTesterStart() {
+	return CALLBACKVALUE . rand();
+}
+
 class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobals = false;
 
@@ -37,8 +41,6 @@ class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 		catch (Cachearium\Exceptions\NotCachedException $e) {
 			$this->fail();
 		}
-
-		// TODO
 	}
 
 	public function testcallbackRAM() {
@@ -51,14 +53,53 @@ class CacheCallbackTest extends PHPUnit_Framework_TestCase {
 	public function testcallbackMemcached() {
 		$cache = CacheMemcached::singleton();
 		if ($cache->isEnabled()) {
-			// $this->_callback($cache);
+			$this->_callback($cache);
 		}
 	}
 
 	public function testcallbackFS() {
 		$cache = CacheFilesystem::singleton();
 		if ($cache->isEnabled()) {
-			// $this->_callback($cache);
+			$this->_callback($cache);
+		}
+	}
+
+	protected function _startcallback(CacheAbstract $cache) {
+		$key = new CacheKey("startcallback", 1);
+
+		$this->assertFalse($cache->start($key));
+		echo "something ";
+		$cache->appendCallback('callbackTesterStart');
+		echo " otherthing";
+		$output = $cache->end(false);
+
+		$this->assertContains(CALLBACKVALUE, $output);
+
+		// run again, we should have another value
+		$second = $cache->start($key);
+		$this->assertNotFalse($second);
+		$this->assertContains(CALLBACKVALUE, $second);
+		$this->assertNotEquals($second, $output);
+	}
+
+	public function teststartCallbackRAM() {
+		$cache = CacheRAM::singleton();
+		if ($cache->isEnabled()) {
+			$this->_startcallback($cache);
+		}
+	}
+
+	public function teststartCallbackMemcached() {
+		$cache = CacheMemcached::singleton();
+		if ($cache->isEnabled()) {
+			$this->_startcallback($cache);
+		}
+	}
+
+	public function teststartCallbackFS() {
+		$cache = CacheFilesystem::singleton();
+		if ($cache->isEnabled()) {
+			$this->_startcallback($cache);
 		}
 	}
 }
