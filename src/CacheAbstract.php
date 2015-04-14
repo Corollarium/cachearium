@@ -455,9 +455,7 @@ abstract class CacheAbstract {
 	 * values may be returned for the same parameters, as storages are likely
 	 * to use key-based cache expiration.
 	 *
-	 * @param string $base
-	 * @param string $id
-	 * @param mixed $sub
+	 * @param CacheKey $k
 	 */
 	abstract protected function hashKey(CacheKey $k);
 
@@ -790,8 +788,9 @@ abstract class CacheAbstract {
 	/**
 	 * Logs cache accesses for debugging
 	 *
-	 * @param CacheLogEnum $status
-	 * @param string $data The message to print.
+	 * @param string $status CacheLogEnum constant
+	 * @param CacheKey $k The message to print.
+	 * @param integer $lifetime
 	 * @codeCoverageIgnore
 	 */
 	protected function log($status, CacheKey $k, $lifetime = 0) {
