@@ -6,7 +6,14 @@
 
 # Cachearium
 
-Cache in your PHP applications. Fast, simple and with easy invalidation.
+High level cache in your PHP applications. Fast, simple and with easy invalidation. Includes:
+
+- recursive cache system, all the russian dolls you ever wanted
+- key based cache expiration (https://signalvnoise.com/posts/3113), no more headaches
+- lifetime expiration, because stuff rots
+- low level cache storage access, when you want to go raw
+- lots of examples ready to copy/paste
+- pluggable backend modules: RAM, Memcached, Filesystem and you can add your own
 
 # Installation
 
@@ -24,6 +31,9 @@ Add this to your composer.json: [see packagist](https://packagist.org/packages/c
 - Include `require_once('Cached.php');`
 
 # Use cases/examples
+
+See the example/ directory, because it's all there for you. Really, just point a webserver
+there and play.
 
 ## Store a single value and invalidate it
 
@@ -192,52 +202,71 @@ cache entry and the entry for the whole list. You can regenerate the list with a
 single DB hit. 
 
 ```php
-$cache = CacheAbstract::factory('your backend');
 
-$cache->start(new CacheKey('main'));
-
-	$cache->start(new CacheKey('header'));
-	$cache->end();
+	$cache = CacheAbstract::factory('your backend');
 	
-	foreach ($somestuff as $stuff) {
-		$stuff->render();
-	}
-
-	$cache->start(new CacheKey('footer'));
-		
-	$cache->end();
-$cache->end();
-
-class Stuff {
-	public function getCacheKey() {
-		return new CacheKey('stuff', $this->getId());
-	}
+	$cache->start(new CacheKey('main'));
 	
-	public function write() {
-		write_some_stuff();
-
-		$cache = CacheAbstract::factory('your backend');
-		$cache->clean($this->getCacheKey());
-	}
-
-	public function render() {
-		$cache = CacheAbstract::factory('your backend');
-		$cache->start($stuff->getCacheKey()->setSub('render'));
-
-		$html = '<p>some html here</p>';
-
-		// other dependency if you have it
-		$cache->addDependency($otherstuff->getCacheKey()); 
-		
+		$cache->start(new CacheKey('header'));
 		$cache->end();
+		
+		foreach ($somestuff as $stuff) {
+			$stuff->render();
+		}
+	
+		$cache->start(new CacheKey('footer'));
+			
+		$cache->end();
+	$cache->end();
+	
+	class Stuff {
+		public function getCacheKey() {
+			return new CacheKey('stuff', $this->getId());
+		}
+		
+		public function write() {
+			write_some_stuff();
+	
+			$cache = CacheAbstract::factory('your backend');
+			$cache->clean($this->getCacheKey());
+		}
+	
+		public function render() {
+			$cache = CacheAbstract::factory('your backend');
+			$cache->start($stuff->getCacheKey()->setSub('render'));
+	
+			$html = '<p>some html here</p>';
+	
+			// other dependency if you have it
+			$cache->addDependency($otherstuff->getCacheKey()); 
+			
+			$cache->end();
+		}
 	}
-}
 ```
 
 ## Cache with a variable fragment
 This is how to handle something such as a site header, that is almost completely the
 same except for a small part that varies for each user.
 
+```php
+
+	function callbackTesterStart() {
+		return rand();
+	}
+
+	$key = new CacheKey("startcallback", 1);
+	$cache->start($key);
+	echo "something ";
+	
+	// this will never be cached, every call to start() will use the rest
+	// of the cached data and call the callback everytime for the variable data 
+	$cache->appendCallback('callbackTesterStart');
+	
+	// everything goes on as planned here
+	echo " otherthing";
+	$output = $cache->end(false);
+```
 
 # Backends
 
