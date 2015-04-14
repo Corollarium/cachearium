@@ -12,9 +12,11 @@ Cache in your PHP applications. Fast, simple and with easy invalidation.
 
 ## Composer
 
-Add this to your composer.json:
+Add this to your composer.json: [see packagist](https://packagist.org/packages/corollarium/cachearium)
 
-TODO
+```
+"corollarium/cachearium": "dev-master"
+```
 
 ## Manual
 
