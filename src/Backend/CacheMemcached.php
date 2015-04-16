@@ -37,7 +37,7 @@ class CacheMemcached extends CacheRAM {
 		static $instances;
 		if (!isset($instances)) {
 			$instances = new CacheMemcached();
-			if ($servers) {
+			if (count($servers)) {
 				$instances->addServers($servers);
 			}
 		}
