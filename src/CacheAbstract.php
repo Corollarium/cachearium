@@ -376,12 +376,14 @@ abstract class CacheAbstract {
 
 	/**
 	 * Starts a cache if it doesn't exist, or outputs the data and returns true.
+	 * Calls extraSub().
 	 *
-	 * @param string $base Base string name for the type of cache (e.g., Event)
-	 * @param string $id Item id
-	 * @param string $sub If an item is cache in parts, this is used to specify the parts.
+	 * @param CacheKey $k
 	 * @param string $lifetime The lifetime, in seconds
-	 * @return boolean True if cached
+	 * @param boolean $print if True echoes the data
+	 * @param boolean $fail if false throws an exception if something happens, such
+	 * as not cached
+	 * @return boolean|string True if cached
 	 * @review
 	 */
 	public function start(CacheKey $k, $lifetime = null, $print = true, $fail = false) {
