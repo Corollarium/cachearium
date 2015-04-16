@@ -93,7 +93,7 @@ class CacheMemcached extends CacheRAM {
 		}
 
 		if (\Memcached::HAVE_IGBINARY) {
-			$this->memcache->setOption(\Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
+			$this->memcached->setOption(\Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_IGBINARY);
 		}
 		$this->memcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
 		$this->lifetime = 3600;
@@ -207,7 +207,7 @@ class CacheMemcached extends CacheRAM {
 	public function increment($value, CacheKey $k, $default = 0) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
-			return false;
+			return $default;
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -279,7 +279,8 @@ class CacheMemcached extends CacheRAM {
 		$group = $this->getGroupString(new CacheKey($base, $id));
 
 		parent::cleanP($base, $id);
-		return $this->memcached->increment($group);
+		$this->memcached->increment($group);
+		return true;
 	}
 
 	/**
