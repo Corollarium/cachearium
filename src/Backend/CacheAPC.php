@@ -4,8 +4,6 @@ namespace Cachearium\Backend;
 
 use Cachearium\CacheAbstract;
 
-require_once('internal/include/Timed.php');
-
 /**
  * Caches in APC
  *
