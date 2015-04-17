@@ -203,7 +203,7 @@ class CacheData {
 
 	/**
 	 * Adds a dependency
-	 * @param array[CacheKey] $k
+	 * @param array<CacheKey> $k
 	 * @return CacheData This
 	 */
 	public function addDependencies(array $deps) {
@@ -216,7 +216,7 @@ class CacheData {
 	/**
 	 * Sets the list of dependencies and updates the dependency hash
 	 *
-	 * @param array:CacheKey $deps
+	 * @param array<CacheKey> $deps
 	 * @param CacheAbstract $cache
 	 * @return CacheData
 	 */
