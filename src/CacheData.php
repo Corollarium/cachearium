@@ -144,7 +144,7 @@ class CacheData {
 
 	/**
 	 *
-	 * @param any $data Any kind of data you want to store. usually strings.
+	 * @param mixed $data Any kind of data you want to store. usually strings.
 	 * @return CacheData
 	 */
 	public function appendData($data) {
@@ -241,9 +241,7 @@ class CacheData {
 
 	/**
 	 * Checks if a set of keys clashes with the ones used here.
-	 * @param string $base
-	 * @param string $id
-	 * @param any $sub
+	 * @param CacheKey $k
 	 * @return boolean True if they match and there is a clash
 	 */
 	public function checkClash(CacheKey $k) {
