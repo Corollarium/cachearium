@@ -19,6 +19,8 @@ High level cache in your PHP applications. What, another one? Nope, this one is 
 - [pluggable backend modules](#backends): RAM, Memcached, Filesystem and you can add your own
 - [detailed logs](#to-see-a-detailed-log) for profiling and debugging, and also see what is cached [live in your webpage](#live-cache-probes)
 
+Cachearium was developed by [Corollarium](https://corollarium.com) because we needed a great cache system.
+
 # Installation
 
 ## Composer
