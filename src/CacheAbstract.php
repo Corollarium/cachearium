@@ -561,6 +561,7 @@ abstract class CacheAbstract {
 					'" data-id="' . $cachedata->getKey()->id .
 					'" data-sub="' . print_r($cachedata->getKey()->sub, true) .
 					'" data-lifetime="' . $cachedata->lifetime .
+					'" data-backend="' . get_class($this) .
 					'" data-type="save"></span>';
 			}
 			// @codeCoverageIgnoreEnd
@@ -593,6 +594,7 @@ abstract class CacheAbstract {
 			'" data-id="' . $cachedata->getKey()->id .
 			'" data-sub="' . print_r($cachedata->getKey()->sub, true) .
 			'" data-lifetime="' . $cachedata->lifetime .
+			'" data-backend="' . get_class($this) .
 			'" data-type="' . $type . '"></span>';
 	}
 
