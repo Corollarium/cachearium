@@ -14,6 +14,14 @@ High level cache in your PHP applications. Fast, simple and with easy invalidati
 - low level cache storage access, when you want to go raw
 - lots of examples ready to copy/paste
 - pluggable backend modules: RAM, Memcached, Filesystem and you can add your own
+- see what is cached live in your webpage
+
+![Cachearium cache debug probes](https://raw.githubusercontent.com/Corollarium/cachearium/master/example/cacheariumprobe.png)
+
+Image showing cache debug probes. Pink areas are not cached. Green areas are cached.
+Note that they are inside one another, using russian doll. The red squares show the 
+dialog with information about each cache hit/miss so you can easily see the cache key,
+which backend was used and other relevant information.  
 
 # Installation
 
