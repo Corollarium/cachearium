@@ -17,7 +17,7 @@ High level cache in your PHP applications. What, another one? Nope, this one is 
 - lots of [examples](https://github.com/Corollarium/cachearium/tree/master/example) and [tests](https://github.com/Corollarium/cachearium/tree/master/test) ready to copy/paste
 - [variable fragments](#cache-with-a-variable-fragment) for things that are almost the same but not quite
 - [pluggable backend modules](#backends): RAM, Memcached, Filesystem and you can add your own
-- [detailed logs](#to-see-detailed-log) for profiling and debugging, and also see what is cached [live in your webpage](#live-cache-probes)
+- [detailed logs](#to-see-a-detailed-log) for profiling and debugging, and also see what is cached [live in your webpage](#live-cache-probes)
 
 # Installation
 
@@ -64,7 +64,7 @@ $cache->footerDebug();
 
 ```
 
-## To see detailed log
+## To see a detailed log
 
 ```php
 
