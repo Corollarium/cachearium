@@ -21,7 +21,9 @@ High level cache in your PHP applications. Fast, simple and with easy invalidati
 Image showing cache debug probes. Pink areas are not cached. Green areas are cached.
 Note that they are inside one another, using russian doll. The red squares show the 
 dialog with information about each cache hit/miss so you can easily see the cache key,
-which backend was used and other relevant information.  
+which backend was used and other relevant information. 
+
+ 
 
 # Installation
 

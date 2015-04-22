@@ -9,6 +9,7 @@ $cache = CacheRAM::singleton();
 
 // turn on page debugging on
 $cache::$debugOnPage = true;
+$cache->setLog(true);
 
 ?>
 <html>
@@ -77,8 +78,11 @@ if (!$cache->start(new CacheKey("outside", 1))) {
 	$cache->end();
 }
 
-
+// this is required for the probes
 $cache->footerDebug();
+
+$cache->report();
+
 ?>
 </body>
 </html>

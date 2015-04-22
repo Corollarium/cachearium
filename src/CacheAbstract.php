@@ -80,6 +80,16 @@ abstract class CacheAbstract {
 	}
 
 	/**
+	 *
+	 * @param boolean $b
+	 * @return CacheAbstract
+	 */
+	public function setLog($b) {
+		$this->should_log = $b;
+		return $this;
+	}
+
+	/**
 	 * Returns a cache
 	 *
 	 * @param string $backend
