@@ -815,11 +815,17 @@ abstract class CacheAbstract {
 		}
 
 		$bt = debug_backtrace();
-		$trace = $bt[1]['function'] . ' at ' . $bt[1]['file'] . ':' . $bt[1]['line'];
-		$this->cache_log[] = array(
-			'status' => $status,
-			'message' => "(" . $k->debug() . ", $lifetime) by " . $trace
-		);
+		foreach ($bt as $i => $d) {
+			if (strpos($d['file'], '/Cache') === false) {
+				// TODO: if() may not work well if user has a file called Cache
+				$trace = $d['function'] . ' at ' . $d['file'] . ':' . $d['line'];
+				$this->cache_log[] = array(
+					'status' => $status,
+					'message' => "(" . $k->debug() . ", $lifetime) by " . $trace
+				);
+				break;
+			}
+		}
 	}
 
 	/**
