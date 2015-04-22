@@ -9,6 +9,7 @@ $cache = CacheRAM::singleton();
 
 // turn on page debugging on
 $cache::$debugOnPage = true;
+$cache->setLog(true);
 
 ?>
 <html>
@@ -64,7 +65,12 @@ someCachedStuff();
 echo '<p>second time is cached</p>';
 someCachedStuff();
 
+echo '<hr/>';
+
 $cache->footerDebug();
+
+$cache->report();
+
 ?>
 </body>
 </html>

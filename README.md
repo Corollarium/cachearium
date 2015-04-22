@@ -6,24 +6,18 @@
 
 # Cachearium
 
-High level cache in your PHP applications. Fast, simple and with easy invalidation. Includes:
+High level cache in your PHP applications. What, another one? Nope, this one is better. Fast, simple and with easy invalidation. Includes:
 
-- recursive cache system, all the russian dolls you ever wanted
-- key based cache expiration (https://signalvnoise.com/posts/3113), no more headaches
+- recursive cache system, all the nested russian dolls you ever wanted
+- easy to integrate with your [existing classes](#cache-associated-with-an-object-model-that-you-can-easily-clean)
+- key based cache [expiration](https://signalvnoise.com/posts/3113), no more headaches to invalidate stuff
+- [multiple dependencies](#store-a-value-with-multiple-dependencies)
 - lifetime expiration, because stuff rots
-- low level cache storage access, when you want to go raw
-- lots of examples ready to copy/paste
-- pluggable backend modules: RAM, Memcached, Filesystem and you can add your own
-- see what is cached live in your webpage
-
-![Cachearium cache debug probes](https://raw.githubusercontent.com/Corollarium/cachearium/master/example/cacheariumprobe.png)
-
-Image showing cache debug probes. Pink areas are not cached. Green areas are cached.
-Note that they are inside one another, using russian doll. The red squares show the 
-dialog with information about each cache hit/miss so you can easily see the cache key,
-which backend was used and other relevant information. 
-
- 
+- [low level cache](#store-a-single-value-and-invalidate-it) storage access, when you want to go raw
+- lots of [examples](https://github.com/Corollarium/cachearium/tree/master/example) and [tests](https://github.com/Corollarium/cachearium/tree/master/test) ready to copy/paste
+- [variable fragments](#cache-with-a-variable-fragment) for things that are almost the same but not quite
+- [pluggable backend modules](#backends): RAM, Memcached, Filesystem and you can add your own
+- [detailed logs](#to-see-detailed-log) for profiling and debugging, and also see what is cached [live in your webpage](#live-cache-probes)
 
 # Installation
 
@@ -31,14 +25,53 @@ which backend was used and other relevant information.
 
 Add this to your composer.json: [see packagist](https://packagist.org/packages/corollarium/cachearium)
 
+If you prefer the cutting edge version, with only the freshest bugs: 
+
 ```
 "corollarium/cachearium": "dev-master"
 ```
 
 ## Manual
 
+No composer? No fret!
+
 - Download the package
-- Include `require_once('Cached.php');`
+- Include `require_once('cachearium/Cached.php');`
+
+# Debug and profile
+
+## Live cache probes
+
+![Cachearium cache debug probes](https://raw.githubusercontent.com/Corollarium/cachearium/master/example/cacheariumprobe.png)
+
+Image showing cache debug probes. Pink areas are not cached. Green areas are cached. Note that they are nested. The red squares show the dialog with information about each cache hit/miss so you can easily see the cache key, which backend was used and other relevant information. 
+
+Probes are only available when you call start()/end().
+
+```php
+
+$cache::$debugOnPage = true;
+
+...
+if (!$cache->start($key)) {
+	// some stuff
+	$cache->end();
+}
+...
+
+// this is required for the probes
+$cache->footerDebug();
+
+```
+
+## To see detailed log
+
+```php
+
+$cache->setLog(true);
+....
+$cache->report(); // will print a detailed report
+```
 
 # Use cases/examples
 
