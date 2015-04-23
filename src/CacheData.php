@@ -2,16 +2,16 @@
 
 namespace Cachearium;
 
-define('CACHEDATA_TYPE_CALLBACK', 'callback');
-define('CACHEDATA_TYPE_RECURSION', 'recursion');
-define('CACHEDATA_TYPE_RECURSION_DATA', 'recursiondata');
-define('CACHEDATA_TYPE_DATA', 'data');
-
 /**
  * Class used to store cache data in start()/get();
  *
  */
 class CacheData {
+	const CACHEDATA_TYPE_CALLBACK = 'callback';
+	const CACHEDATA_TYPE_RECURSION = 'recursion';
+	const CACHEDATA_TYPE_RECURSION_DATA = 'recursiondata';
+	const CACHEDATA_TYPE_DATA = 'data';
+
 	/**
 	 *
 	 * @var CacheKey
@@ -67,7 +67,7 @@ class CacheData {
 	 * @return CacheData
 	 */
 	public function appendCallback(callable $callback) {
-		$this->data[] = array('type' => CACHEDATA_TYPE_CALLBACK, 'data' => $callback);
+		$this->data[] = array('type' => self::CACHEDATA_TYPE_CALLBACK, 'data' => $callback);
 		return $this;
 	}
 
@@ -149,20 +149,20 @@ class CacheData {
 	 */
 	public function appendData($data) {
 		if ($data) {
-			$this->data[] = array('type' => CACHEDATA_TYPE_DATA, 'data' => $data);
+			$this->data[] = array('type' => self::CACHEDATA_TYPE_DATA, 'data' => $data);
 		}
 		return $this;
 	}
 
 	/**
-	 * Convenience function. Returns the first data CACHEDATA_TYPE_DATA that you
+	 * Convenience function. Returns the first data self::CACHEDATA_TYPE_DATA that you
 	 * stored. Returns null if there is none.
 	 *
 	 * @return any|NULL
 	 */
 	public function getFirstData() {
 		foreach ($this->data as $d) {
-			if ($d['type'] == CACHEDATA_TYPE_DATA) {
+			if ($d['type'] == self::CACHEDATA_TYPE_DATA) {
 				return $d['data'];
 			}
 		}
@@ -172,7 +172,7 @@ class CacheData {
 	public function appendRecursion(CacheKey $k) {
 		$this->addDependency($k);
 		$this->data[] = array(
-			'type' => CACHEDATA_TYPE_RECURSION,
+			'type' => self::CACHEDATA_TYPE_RECURSION,
 			'data' => $k
 		);
 		return $this;
@@ -184,7 +184,7 @@ class CacheData {
 		}
 		$this->addDependency($d->getKey());
 		$this->data[] = array(
-			'type' => CACHEDATA_TYPE_RECURSION_DATA,
+			'type' => self::CACHEDATA_TYPE_RECURSION_DATA,
 			'data' => $d->getKey()
 		);
 		return $this;
@@ -257,7 +257,7 @@ class CacheData {
 	public function stringify(CacheAbstract $c, $recurse = true) {
 		$retval = [];
 		foreach ($this->data as $item) {
-			if ($item['type'] == CACHEDATA_TYPE_CALLBACK) {
+			if ($item['type'] == self::CACHEDATA_TYPE_CALLBACK) {
 				$callback = $item['data'];
 				if (is_callable($callback)) {
 					$retval[] = call_user_func($callback);
@@ -266,12 +266,12 @@ class CacheData {
 					// throw?
 				}
 			}
-			else if ($item['type'] == CACHEDATA_TYPE_RECURSION) {
+			else if ($item['type'] == self::CACHEDATA_TYPE_RECURSION) {
 				if ($recurse) {
 					$retval[] = $c->get($item['data']);
 				}
 			}
-			else if ($item['type'] == CACHEDATA_TYPE_RECURSION_DATA) {
+			else if ($item['type'] == self::CACHEDATA_TYPE_RECURSION_DATA) {
 				if ($recurse) {
 					$data = $c->getData($item['data']);
 					$retval[] = $data->stringify($c);
