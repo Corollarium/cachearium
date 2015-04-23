@@ -313,6 +313,22 @@ same except for a small part that varies for each user.
 	$output = $cache->end(false);
 ```
 
+## Always add something to the cache keys
+
+Let's say for example you have a multi-language website. Caching fragments will 
+always need to add the language as part of the key. Cachearium provides a simple
+way to do this by creating a special function:
+
+```php
+function application_cacheDependencies() {
+	// can return an array or a string
+	return [Application::getLanguage(), somethingelse()];
+}
+```
+
+This will be added automatically to your keys in every call to start(). If you 
+need to override this for a single call, use recursiveStart() instead.
+
 # Backends
 
 ## Null
