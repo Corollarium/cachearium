@@ -79,12 +79,12 @@ class CacheMemcached extends CacheRAM {
 
 	/**
 	 * Constructor.
+	 * @throws Exception when the memcached extension can't be found
 	 * @codeCoverageIgnore
 	 */
 	private function __construct() {
 		if (!extension_loaded('memcached')) {
-			$this->disable();
-			return;
+			throw new Exception('Memcached module coult not be found.');
 		}
 		$this->memcached = new \Memcached;
 		if (!$this->memcached) {
@@ -111,9 +111,6 @@ class CacheMemcached extends CacheRAM {
 	 * @codeCoverageIgnore
 	 */
 	public function addServers($servers) {
-		if (!extension_loaded('memcached')) {
-			return false;
-		}
 		return $this->memcached->addServers($servers);
 	}
 
