@@ -6,6 +6,7 @@ use Cachearium\Backend\CacheRAM;
 use Cachearium\CacheLogEnum;
 use Cachearium\CacheKey;
 use Cachearium\Exceptions\NotCachedException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Cache class which uses memcache.
@@ -78,12 +79,12 @@ class CacheMemcached extends CacheRAM {
 
 	/**
 	 * Constructor.
-	 * @throws Exception when the memcached extension can't be found
 	 * @codeCoverageIgnore
 	 */
 	private function __construct() {
 		if (!extension_loaded('memcached')) {
-			throw new \Cachearium\Exceptions\CacheInvalidBackendException('Memcached module could not be found.');
+			$this->disable();
+			return;
 		}
 		$this->memcached = new \Memcached;
 		if (!$this->memcached) {
@@ -110,6 +111,9 @@ class CacheMemcached extends CacheRAM {
 	 * @codeCoverageIgnore
 	 */
 	public function addServers($servers) {
+		if (!extension_loaded('memcached')) {
+			return false;
+		}
 		return $this->memcached->addServers($servers);
 	}
 
