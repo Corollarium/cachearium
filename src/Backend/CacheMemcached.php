@@ -84,7 +84,7 @@ class CacheMemcached extends CacheRAM {
 	 */
 	private function __construct() {
 		if (!extension_loaded('memcached')) {
-			throw new Exception('Memcached module coult not be found.');
+			throw new \Exception('Memcached module coult not be found.');
 		}
 		$this->memcached = new \Memcached;
 		if (!$this->memcached) {
