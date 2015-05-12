@@ -5,6 +5,7 @@ php:
   - 5.6
 
 before_script:
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update || true
   - composer --prefer-source --dev install
 
