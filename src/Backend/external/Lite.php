@@ -749,7 +749,8 @@ class Cache_Lite
     */
     function _write($data)
     {
-        if ($this->_hashedDirectoryLevel > 0) {
+        $oldmask = umask(0);
+    	if ($this->_hashedDirectoryLevel > 0) {
             $hash = md5($this->_fileName);
             $root = $this->_cacheDir;
             for ($i=0 ; $i<$this->_hashedDirectoryLevel ; $i++) {
@@ -769,8 +770,10 @@ class Cache_Lite
             @fwrite($fp, $data, $len);
             if ($this->_fileLocking) @flock($fp, LOCK_UN);
             @fclose($fp);
+            umask($oldmask);
             return true;
         }
+        umask($oldmask);
         return $this->raiseError('Cache_Lite : Unable to write cache file : '.$this->_file, -1);
     }
 
