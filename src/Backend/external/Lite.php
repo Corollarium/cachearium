@@ -234,7 +234,7 @@ class Cache_Lite
     *
     * @var int $_hashedDirectoryUmask
     */
-    var $_hashedDirectoryUmask = 0700;
+    var $_hashedDirectoryUmask = 0770;
 
     /**
      * API break for error handling in CACHE_LITE_ERROR_RETURN mode
