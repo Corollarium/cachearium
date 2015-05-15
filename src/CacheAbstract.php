@@ -702,8 +702,8 @@ abstract class CacheAbstract {
 		}
 
 		$this->inloop++;
-		$cd = new CacheData();
-		$cd->setKey($k)->setLifetime($lifetime ? $lifetime : $this->lifetime);
+		$cd = new CacheData($k);
+		$cd->setLifetime($lifetime ? $lifetime : $this->lifetime);
 		$this->loopdata[$this->inloop] = $cd;
 
 		if ($this->inloop > 1) {
