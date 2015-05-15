@@ -128,7 +128,8 @@ catch (NotCachedException($e)) {
 
 // store new value with automatic invalidation
 $lifeTime = 3000;
-$cache->storeData(new CacheData(new CacheKey('Namespace', 'Subname')), $lifeTime);
+$fancyData = 'someData';
+$cache->storeData(new CacheData(new CacheKey('Namespace', 'Subname'), $fancyData), $lifeTime);
 ```
 
 ## Store a value with multiple dependencies
