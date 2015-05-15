@@ -44,6 +44,11 @@ class CacheMemcached extends CacheRAM {
 		return $instances;
 	}
 
+	/**
+	 * Is memcached available in this system?
+	 *
+	 * @return boolean
+	 */
 	static public function hasMemcachedExt() {
 		return extension_loaded('memcached');
 	}
