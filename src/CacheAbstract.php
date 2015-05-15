@@ -109,13 +109,15 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	public static function clearAll() {
-		// TODO: should only clear the ones that were instantiated?
-		foreach (get_declared_classes() as $classname) {
-			if (is_subclass_of($classname, 'CacheAbstract')) {
-				$class = new ReflectionClass($classname);
-				if (!$class->isAbstract() && $classname::singleton()->isEnabled()) {
-					$classname::singleton()->clear();
-				}
+		$caches = [
+			\Cachearium\Backend\CacheRAM::singleton(),
+			\Cachearium\Backend\CacheFilesystem::singleton(),
+			\Cachearium\Backend\CacheMemcached::singleton(),
+			// TODO cache apc is broken \Cachearium\Backend\CacheAPC::singleton()
+		];
+		foreach($caches as $cacheInst) {
+			if ($cacheInst->isEnabled()) {
+				$cacheInst->clear();
 			}
 		}
 	}
