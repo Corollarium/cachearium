@@ -115,7 +115,7 @@ $data = 'xxxx';
 
 // store
 $cache = CacheAbstract::factory('your backend');
-$cache->storeData(new CacheData($data, new CacheKey('Namespace', 'Subname')));
+$cache->storeData(new CacheData(new CacheKey('Namespace', 'Subname'), $data));
 
 // get it later
 try { 
@@ -128,7 +128,7 @@ catch (NotCachedException($e)) {
 
 // store new value with automatic invalidation
 $data = 'yyy';
-$cache->storeData((new CacheData($data, new CacheKey('Namespace', 'Subname'));
+$cache->storeData((new CacheData(new CacheKey('Namespace', 'Subname'), $data);
 ```
 
 ## Store a value with multiple dependencies
@@ -141,7 +141,7 @@ $cache = CacheAbstract::factory('your backend');
 
 // create a storage key and bucket
 $key = new CacheKey('Namespace', 'Subname');
-$cd = new CacheData($data, $key);
+$cd = new CacheData($key, $data);
 
 // add dependencies. setDependencies will generate immediately, avoiding races.
 // otherwise you find results, the DB changes in another process and you get a
@@ -187,7 +187,7 @@ function someSearch() {
 	// create cache data
 	$cd = 
 	$cache->storeData(
-		(new CacheData($searchdata, $key))
+		(new CacheData($key, $searchdata))
 		->setDependencies($dependencies);
 	);
 	
