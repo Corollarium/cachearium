@@ -44,6 +44,9 @@ class CacheMemcached extends CacheRAM {
 		return $instances;
 	}
 
+	static public function hasMemcachedExt() {
+		return extension_loaded('memcached');
+	}
 
 	// @codeCoverageIgnoreStart
 	// Prevent users to clone the instance
@@ -81,7 +84,7 @@ class CacheMemcached extends CacheRAM {
 	 * @codeCoverageIgnore
 	 */
 	private function __construct() {
-		if (!extension_loaded('memcached')) {
+		if (!self::hasMemcachedExt()) {
 			$this->disable();
 			return;
 		}
@@ -110,7 +113,7 @@ class CacheMemcached extends CacheRAM {
 	 * @codeCoverageIgnore
 	 */
 	public function addServers($servers) {
-		if (!extension_loaded('memcached')) {
+		if (!self::hasMemcachedExt()) {
 			return false;
 		}
 		return $this->memcached->addServers($servers);

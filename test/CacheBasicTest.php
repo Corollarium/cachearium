@@ -374,4 +374,31 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 			}
 		}
 	}
+
+	public function testClearAll() {
+		$cacheKey = new CacheKey('test', 1);
+		$cacheData = new CacheData('test', $cacheKey);
+
+		$caches = [CacheRAM::singleton(), CacheFilesystem::singleton()];
+		if (CacheMemcached::hasMemcachedExt()) {
+			$caches[] = CacheMemcached::singleton();
+		}
+		foreach($caches as $cacheInst) {
+			$cacheInst->enable()->storeData($cacheData);
+			$retrievedData = $cacheInst->getData($cacheKey);
+			$this->assertEquals($cacheData->getFirstData(), $retrievedData->getFirstData());
+		}
+
+		CacheAbstract::clearAll();
+
+		foreach($caches as $cacheInst) {
+			try {
+				$retrievedData = $cacheInst->getData($cacheKey);
+				$this->fail('Cache should be empty after a clearAll call !');
+			}
+			catch(\Cachearium\Exceptions\NotCachedException $e) {
+				$this->assertTrue(true, 'All cache was cleaned');
+			}
+		}
+	}
 }
