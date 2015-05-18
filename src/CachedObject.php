@@ -2,7 +2,7 @@
 
 namespace Cachearium;
 
-trait CachedObject {
+interface CachedObject {
 	/**
 	 * Returns a cache key for this object.
 	 *
@@ -11,6 +11,6 @@ trait CachedObject {
 	 *
 	 * @return CacheKey
 	 */
-	abstract public function getCacheKey($atts = null);
+	public function getCacheKey($atts = null);
 }
 

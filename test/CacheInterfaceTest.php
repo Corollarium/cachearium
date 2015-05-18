@@ -2,10 +2,7 @@
 
 use Cachearium\CacheKey;
 
-class MockCachedClass {
-	use Cachearium\Cached;
-	use Cachearium\CachedObject;
-
+class MockCachedClass implements Cachearium\Cached, Cachearium\CachedObject {
 	public function cacheClean() {
 		return;
 	}

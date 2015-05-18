@@ -5,7 +5,7 @@ namespace Cachearium;
 /**
  * Interface for classes which cache data.
  */
-trait Cached {
+interface Cached {
 	/**
 	 * Clean all caches created by the class. Used when a new version is
 	 * deployed to avoid stale data.
