@@ -20,7 +20,7 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 
 	public function testKey() {
 		$ck = new CacheKey('base', 'id', 'sub');
-		$cd = new CacheData('', $ck);
+		$cd = new CacheData($ck, '');
 		$this->assertEquals($cd->key, $ck);
 
 		$ck2 = new CacheKey('base', 'id', 'sub2');
@@ -35,10 +35,8 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotNull($ck1);
 		$this->assertNotNull($ck2);
 		$this->assertNotNull($ck3);
-		$cd1 = new CacheData();
-		$cd2 = new CacheData('is', $ck2);
-		$cd3 = new CacheData('data', $ck3);
-		$this->assertNotNull($cd1);
+		$cd2 = new CacheData($ck2, 'is');
+		$cd3 = new CacheData($ck3, 'data');
 		$this->assertNotNull($cd2);
 		$this->assertNotNull($cd3);
 		$this->markTestIncomplete();
@@ -48,8 +46,8 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 		$cache = Cachearium\Backend\CacheRAM::singleton();
 		$ck1 = new CacheKey('callback', 1, 'sub');
 		$ck2 = new CacheKey('callback', 2, 'sub');
-		$cd1 = new CacheData(null, $ck1);
-		$cd2 = new CacheData(null, $ck2);
+		$cd1 = new CacheData($ck1, null);
+		$cd2 = new CacheData($ck2, null);
 
 		$cd2->appendCallback('callbackDataTester');
 		$cd1->appendData('something');
@@ -68,9 +66,9 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 		$ck1 = new CacheKey('recursion', 1, 'sub');
 		$ck2 = new CacheKey('recursion', 2, 'sub');
 		$ck3 = new CacheKey('recursion', 3, 'sub');
-		$cd1 = new CacheData('this', $ck1);
-		$cd2 = new CacheData('is', $ck2);
-		$cd3 = new CacheData('recursion', $ck3);
+		$cd1 = new CacheData($ck1, 'this');
+		$cd2 = new CacheData($ck2, 'is');
+		$cd3 = new CacheData($ck3, 'recursion');
 		$cd2->appendRecursionData($cd3);
 		$cd1->appendRecursionData($cd2);
 		$this->assertTrue($cache->storeData($cd3));
@@ -82,7 +80,7 @@ class CacheDataTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('thisisrecursion', $cd1->stringify($cache));
 
-		$cd2 = new CacheData('breaks', $ck2);
+		$cd2 = new CacheData($ck2, 'breaks');
 		$this->assertTrue($cache->storeData($cd2));
 		try {
 			$cache->getData($ck1);

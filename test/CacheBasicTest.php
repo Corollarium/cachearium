@@ -159,7 +159,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		}
 
 		// store
-		$cd = new CacheData(234, $key1);
+		$cd = new CacheData($key1, 234);
 		$retval = $cache->storeData($cd);
 		$this->assertTrue($retval);
 
@@ -207,7 +207,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$key2 = new CacheKey($base, 2, 'a');
 		$key3 = new CacheKey($base, 3, 'a');
 		// now change again and delete
-		$retval = $cache->storeData(new CacheData(234, $key2));
+		$retval = $cache->storeData(new CacheData($key2, 234));
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->getData($key2);
@@ -220,7 +220,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cache->delete($key2));
 
 		// test null
-		$retval = $cache->storeData(new CacheData(null, $key3));
+		$retval = $cache->storeData(new CacheData($key3), null);
 		$this->assertEquals(true, $retval);
 		try {
 			$data = $cache->getData($key3);
@@ -257,7 +257,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 	private function dependency(CacheAbstract $cache) {
 		// store
 		$key1 = new CacheKey('Namespace', 'Subname');
-		$cd = new CacheData('xxxx', $key1);
+		$cd = new CacheData($key1, 'xxxx');
 		$depkey = new CacheKey('Namespace', 'SomeDep');
 		$cd->addDependency($depkey);
 		$cache->storeData($cd);
@@ -309,7 +309,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 	public function clear(CacheAbstract $cache) {
 		$key = new CacheKey('clear', 'it');
-		$cd = new CacheData(789, $key);
+		$cd = new CacheData($key, 789);
 		$this->assertTrue($cache->storeData($cd));
 		$cache->clear();
 		try {
@@ -377,7 +377,7 @@ class CacheBasicTest extends PHPUnit_Framework_TestCase {
 
 	public function testClearAll() {
 		$cacheKey = new CacheKey('test', 1);
-		$cacheData = new CacheData('test', $cacheKey);
+		$cacheData = new CacheData($cacheKey, 'test');
 
 		$caches = [CacheRAM::singleton(), CacheFilesystem::singleton()];
 		if (CacheMemcached::hasMemcachedExt()) {

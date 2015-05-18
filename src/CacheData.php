@@ -42,12 +42,11 @@ class CacheData {
 
 	private $dependenciesHash = '';
 
-	public function __construct($data = null, CacheKey $ck = null) {
+	public function __construct(CacheKey $ck, $data = null) {
+		$this->setKey($ck);
+
 		if ($data) {
 			$this->appendData($data);
-		}
-		if ($ck) {
-			$this->setKey($ck);
 		}
 	}
 
