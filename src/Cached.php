@@ -11,5 +11,5 @@ interface Cached {
 	 * deployed to avoid stale data.
 	 *
 	 */
-	abstract public function cacheClean();
+	public function cacheClean();
 }
