@@ -7,7 +7,7 @@ class MockCachedClass implements Cachearium\Cached, Cachearium\CachedObject {
 		return;
 	}
 
-	public function getCacheKey() {
+	public function getCacheKey($atts = null) {
 		return new CacheKey('MockCachedClass', 1);
 	}
 }
