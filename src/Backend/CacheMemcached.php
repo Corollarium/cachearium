@@ -246,7 +246,7 @@ class CacheMemcached extends CacheRAM {
 		$this->log(CacheLogEnum::SAVED, $k);
 
 		$x = $this->memcached->set(
-			$group, serialize($data), 0, $lifetime ? $lifetime : $this->lifetime
+			$group, serialize($data), $lifetime ? $lifetime : $this->lifetime
 		);
 		parent::store($data, $k, $lifetime);
 
