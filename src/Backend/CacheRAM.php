@@ -22,6 +22,8 @@ use Cachearium\Exceptions\NotCachedException;
 class CacheRAM extends CacheAbstract {
 	private $storage = array(); // storage
 
+	private $memoryLimit = 500000000;
+
 	// @codeCoverageIgnoreStart
 	/**
 	 * Cache constructor (this is a singleton).
@@ -171,6 +173,34 @@ class CacheRAM extends CacheAbstract {
 
 	public function clear() {
 		$this->storage = array();
+		return true;
+	}
+
+	public function setMemoryLimit($memoryLimit) {
+		return $this->memoryLimit;
+	}
+
+	/**
+	 *
+	 * @param integer $memoryLimit
+	 * @return \Cachearium\Backend\CacheRAM
+	 */
+	public function setMemoryLimit($memoryLimit) {
+		$this->memoryLimit = $memoryLimit;
+		return $this;
+	}
+
+	/**
+	 * Clears cache if PHP memory usage is above a chosen limit
+	 * This checks the ENTIRE PHP memory usage, which may be a lot more
+	 * than what is used by this backend.
+	 *
+	 * @return boolean
+	 */
+	public function limitRAM() {
+		if (memory_get_usage() > $this->memoryLimit) {
+			$this->clear();
+		}
 		return true;
 	}
 
