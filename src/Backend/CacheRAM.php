@@ -176,7 +176,7 @@ class CacheRAM extends CacheAbstract {
 		return true;
 	}
 
-	public function setMemoryLimit($memoryLimit) {
+	public function getMemoryLimit($memoryLimit) {
 		return $this->memoryLimit;
 	}
 
