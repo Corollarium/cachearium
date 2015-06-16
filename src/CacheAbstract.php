@@ -748,7 +748,12 @@ abstract class CacheAbstract {
 		$cachedata->generateDependenciesHash($this);
 		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
 		$this->storeP($cachedata, 'cacherecursive', 0, $mainkey);
-		$this->storeData($cachedata);
+		try {
+			$this->storeData($cachedata);
+		}
+		catch (Cachearium\Exceptions\CacheUnsupportedOperation $e) {
+			// not much we can do here, so just keep on going
+		}
 
 		// if recursive
 		unset($this->loopdata[$this->inloop]);
