@@ -783,7 +783,7 @@ abstract class CacheAbstract {
 	 *
 	 */
 	public function end($print = true) {
-		return $this->recursiveend($print);
+		return $this->recursiveEnd($print);
 	}
 
 	/*
