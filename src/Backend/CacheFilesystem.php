@@ -81,6 +81,7 @@ class CacheFilesystem extends CacheAbstract {
 				'lifeTime' => $this->getDefaultLifetime(), // in seconds
 				'automaticCleaningFactor' => 200,
 				'hashedDirectoryLevel' => 1,
+				'writeControl' => false,
 			)
 		);
 		return parent::enable();

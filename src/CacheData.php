@@ -100,8 +100,20 @@ class CacheData {
 		return false;
 	}
 
+	/**
+	 * Init dependencies. If increment is not supported by backend return 0.
+	 *
+	 * @param CacheAbstract $cache
+	 * @param CacheKey $k
+	 * @return integer
+	 */
 	public function dependencyInit(CacheAbstract $cache, CacheKey $k) {
-		return $cache->increment(0, $k, 0);
+		try {
+			return $cache->increment(0, $k, 0);
+		}
+		catch (\Cachearium\Exceptions\CacheUnsupportedOperation $e) {
+			return 0;
+		}
 	}
 
 	/**

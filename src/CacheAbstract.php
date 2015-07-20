@@ -554,8 +554,12 @@ abstract class CacheAbstract {
 
 		$cachedata->generateDependenciesHash($this);
 		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
-		$this->store($cachedata, 'cacherecursive', 0, $mainkey);
-		$this->storeData($cachedata);
+			if (!$this->storeP($cachedata, 'cacherecursive', 0, $mainkey)) {
+			throw new \Cachearium\Exceptions\CacheStoreFailure("Storing key");
+		}
+		if (!$this->storeData($cachedata)) {
+			throw new \Cachearium\Exceptions\CacheStoreFailure("Storing data");
+		}
 
 		// if recursive
 		$this->inloop--;
@@ -745,14 +749,18 @@ abstract class CacheAbstract {
 		$cachedata = $this->loopdata[$this->inloop];
 		$cachedata->appendData($data);
 
-		$cachedata->generateDependenciesHash($this);
-		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
-		$this->storeP($cachedata, 'cacherecursive', 0, $mainkey);
 		try {
-			$this->storeData($cachedata);
+			$cachedata->generateDependenciesHash($this);
 		}
-		catch (Cachearium\Exceptions\CacheUnsupportedOperation $e) {
+		catch (\Cachearium\Exceptions\CacheUnsupportedOperation $e) {
 			// not much we can do here, so just keep on going
+		}
+		$mainkey = $this->keyFromDeps($cachedata->getKey(), $cachedata->dependencies);
+		if (!$this->storeP($cachedata, 'cacherecursive', 0, $mainkey)) {
+			throw new \Cachearium\Exceptions\CacheStoreFailure("Storing key");
+		}
+		if (!$this->storeData($cachedata)) {
+			throw new \Cachearium\Exceptions\CacheStoreFailure("Storing data");
 		}
 
 		// if recursive
