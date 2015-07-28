@@ -521,11 +521,7 @@ class Cache_Lite
     }
 
     /**
-    * Trigger a PEAR error
-    *
-    * To improve performances, the PEAR.php file is included dynamically.
-    * The file is so included only when an error is triggered. So, in most
-    * cases, the file isn't included and perfs are much better.
+    * Trigger error
     *
     * @param string $msg error message
     * @param int $code error code
@@ -533,9 +529,7 @@ class Cache_Lite
     */
     function raiseError($msg, $code)
     {
-        include_once('PEAR.php');
-        $p = new PEAR();
-        return $p->raiseError($msg, $code, $this->_pearErrorMode);
+        return new Exception($msg);
     }
 
     /**
