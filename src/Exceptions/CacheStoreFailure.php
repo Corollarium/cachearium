@@ -7,5 +7,5 @@ namespace Cachearium\Exceptions;
  * @author corollarium
  * @codeCoverageIgnore
  */
-class CacheInvalidDataException extends \Exception {
+class CacheStoreFailure extends \Exception {
 }
