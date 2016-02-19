@@ -736,10 +736,16 @@ abstract class CacheAbstract {
 		return false;
 	}
 
+	/**
+	 *
+	 * @param boolean $print
+	 * @throws \Cachearium\Exceptions\CacheStoreFailure
+	 * @return string The string. If $print == true the string is printed as well.
+	 */
 	public function recursiveEnd($print = true) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
-			return false;
+			return null;
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -767,7 +773,7 @@ abstract class CacheAbstract {
 		unset($this->loopdata[$this->inloop]);
 		$this->inloop--;
 		if ($this->inloop > 0) {
-			return false;
+			return null;
 		}
 
 		if ($print) {
@@ -778,14 +784,15 @@ abstract class CacheAbstract {
 			}
 			// @codeCoverageIgnoreEnd
 
-			echo $cachedata->stringify($this);
+			$str = $cachedata->stringify($this);
+			echo $str;
 
 			// @codeCoverageIgnoreStart
 			if (static::$debugOnPage) {
 				$this->printProbeEnd($key, $cachedata);
 			}
 			// @codeCoverageIgnoreEnd
-			return;
+			return $str;
 		}
 
 		return $cachedata->stringify($this);
@@ -793,7 +800,7 @@ abstract class CacheAbstract {
 
 	/**
 	 * Ends the cache start().
-	 *
+	 * @see recursiveEnd()
 	 */
 	public function end($print = true) {
 		return $this->recursiveEnd($print);
