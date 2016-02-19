@@ -745,7 +745,7 @@ abstract class CacheAbstract {
 	public function recursiveEnd($print = true) {
 		// @codeCoverageIgnoreStart
 		if (!$this->enabled) {
-			return null;
+			return '';
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -773,7 +773,7 @@ abstract class CacheAbstract {
 		unset($this->loopdata[$this->inloop]);
 		$this->inloop--;
 		if ($this->inloop > 0) {
-			return null;
+			return '';
 		}
 
 		if ($print) {
