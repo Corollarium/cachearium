@@ -34,7 +34,7 @@ class Cache_Lite_Timed extends Cache_Lite
     */
     function __construct($options = array(NULL))
     {
-        $this->Cache_Lite($options);
+        parent::__construct($options);
     }
 
     /**
