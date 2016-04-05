@@ -32,7 +32,7 @@ class Cache_Lite_Timed extends Cache_Lite
     * @param array $options options
     * @access public
     */
-    function Cache_Lite_Timed($options = array(NULL))
+    function __construct($options = array(NULL))
     {
         $this->Cache_Lite($options);
     }
