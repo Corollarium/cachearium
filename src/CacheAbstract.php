@@ -79,6 +79,17 @@ abstract class CacheAbstract {
 		return static::$summary;
 	}
 
+	public static function resetLogSummary() {
+		static::$summary = array(
+			CacheLogEnum::ACCESSED   => 0,
+			CacheLogEnum::MISSED     => 0,
+			CacheLogEnum::DELETED    => 0,
+			CacheLogEnum::CLEANED    => 0,
+			CacheLogEnum::SAVED      => 0,
+			CacheLogEnum::PREFETCHED => 0,
+		);
+	}
+
 	/**
 	 *
 	 * @param boolean $b
