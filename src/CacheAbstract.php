@@ -817,6 +817,33 @@ abstract class CacheAbstract {
 		return $this->recursiveEnd($print);
 	}
 
+	/**
+	 * Cancels something started by recursiveStart() if you don't want to call recursiveEnd()
+	 *
+	 */
+	public function recursiveAbort() {
+		// @codeCoverageIgnoreStart
+		if (!$this->enabled) {
+			return;
+		}
+		// @codeCoverageIgnoreEnd
+
+		ob_end_clean();
+
+		// if recursive
+		unset($this->loopdata[$this->inloop]);
+		$this->inloop--;
+
+		return;
+	}
+
+	/**
+	 * Alias for recursiveAbort()
+	 */
+	public function abort() {
+		$this->recursiveAbort();
+	}
+
 	/*
 	 * DEBUG
 	 */
