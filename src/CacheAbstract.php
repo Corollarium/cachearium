@@ -893,7 +893,7 @@ abstract class CacheAbstract {
 	 * @codeCoverageIgnore
 	 */
 	public static function dumpSummary() {
-		echo '<div id="cache-summary">Cache Summary (non-ajax): ';
+		echo '<div class="cache-summary">Cache Summary (non-ajax): ';
 		foreach (static::getLogSummary() as $key => $val) {
 			echo $key . '=>' . $val . ' / ';
 		}
